@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\User;
 
 use Illuminate\Http\Request;
 
@@ -13,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        // TODO : Menampilkan data user
+        return view('admin.user.index');
     }
 
     /**
@@ -23,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        // TODO : Membuat data user (sisi admin)
     }
 
     /**
@@ -34,7 +36,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // TODO : menyimpan data user (sisi admin)
     }
 
     /**
