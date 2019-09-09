@@ -19,4 +19,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('users', 'UserController');
+Route::group(['prefix' => 'admin'], function () {
+
+    // nantinya ini menjadi home ketika login
+    Route::get('/', 'DashboardController@index')->name('dashboard');
+
+    Route::resource('users', 'UserController', ['except' => ['show', 'edit']]);
+});
+
+

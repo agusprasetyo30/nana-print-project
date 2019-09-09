@@ -35,6 +35,9 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700|Open+Sans:300,300i,400,400i,700,700i"
     rel="stylesheet">
 
+    {{-- Custom CSS --}}
+    <link rel="stylesheet" href="{{ asset('assets/admin/dist/css/app.css') }}">
+
     @stack('css')
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"> --}}
 </head>
@@ -46,9 +49,9 @@
             <!-- Logo -->
             <a href="#" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>KM</b></span>
+                <span class="logo-mini"><b>NPA</b></span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>Kampoeng</b> Malang</span>
+                <span class="logo-lg"><b>Nana </b> Print & ATK</span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top">
@@ -186,40 +189,6 @@
     </script>
 
     @stack('js')
-    {{--
-    <!-- jQuery 3 -->
-    <script src="{{ asset('assets/admin/bower_components/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-
-    <!-- jQuery UI 1.11.4 -->
-    <script src="{{ asset('assets/admin/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button);
-    </script>
-    <!-- Bootstrap 3.3.7 -->
-    <!-- DataTables -->
-    <script src="{{ asset('assets/admin/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-    <!-- Sparkline -->
-    <script src="{{ asset('assets/admin/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') }}"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="{{ asset('assets/admin/bower_components/jquery-knob/dist/jquery.knob.min.js') }}"></script>
-    <!-- Bootstrap WYSIHTML5 -->
-    <script src="{{ asset('assets/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
-    <!-- CK Editor -->
-    <script src="../../bower_components/ckeditor/ckeditor.js"></script>
-    <!-- Slim Scroll -->
-    <script src="{{ asset('assets/admin/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
-    <!-- FastClick -->
-    <script src="{{ asset('assets/admin/bower_components/fastclick/lib/fastclick.js') }}"></script>
-    <!-- AdminLTE App -->
-    <script src="{{ asset('assets/admin/dist/js/adminlte.min.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('assets/admin/dist/js/pages/dashboard.js') }}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ asset('assets/admin/dist/js/demo.js') }}"></script> --}}
-
 
 </body>
 

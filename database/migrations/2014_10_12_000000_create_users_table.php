@@ -16,11 +16,12 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            // unique() = Tidak ada data yg sama
             $table->string('email')->unique();
             $table->string('password');
-            $table->text('alamat');
+            $table->text('address');
             $table->string('phone', 15);
-            $table->enum('status', ['ACTIVE', 'INCATIVE']);
+            $table->enum('status', ['ACTIVE', 'INACTIVE']);
             $table->string('avatar');
             $table->rememberToken();
             $table->timestamps();

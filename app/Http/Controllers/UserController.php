@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+
+use App\User;
 
 class UserController extends Controller
 {
@@ -12,20 +14,23 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // TODO : Menampilkan data user
-        return view('admin.user.index');
-    }
+        $status = $request->get('role');
+        $keyword = $request->get('keyword') ? $request->get('keyword') : '';
+        $number = numberPagination(5);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // TODO : Membuat data user (sisi admin)
+        if ($status) {
+            $users = User::Role($status)
+                ->where("name", "LIKE", "%$keyword%")
+                ->paginate(5);
+
+        } else {
+            $users = User::where("name", "LIKE", "%$keyword%")
+                ->paginate(5);
+        }
+
+        return view('admin.user.index', compact('users', 'number'));
     }
 
     /**
@@ -36,29 +41,36 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO : menyimpan data user (sisi admin)
-    }
+        $user = new User;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $user->name = $request->get('name');
+        $user->username = $request->get('username');
+        $user->email = $request->get('email');
+        $user->password = Hash::make($request->get('password'));
+        $user->address = $request->get('address');
+        $user->phone = $request->get('phone');
+        $user->status = 'ACTIVE';
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $avatar = $request->file('avatar');
+
+        if ($avatar)
+        {
+            $avatar_path = saveOriginalPhoto($avatar, $user->username, 'user-avatars');
+
+            $user->avatar = $avatar_path;
+
+        } else {
+
+            $user->avatar = "";
+        }
+
+        $user->save();
+
+        $user->assignRole($request->role);
+
+        return redirect()
+                ->route('users.index')
+                ->with('status', 'User successfully add');
     }
 
     /**
@@ -68,9 +80,35 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $dataRoles = $request->get('role');
+        
+        $user = User::findOrFail($request->user_id);
+
+        $user->name = $request->get('name');
+        $user->address = $request->get('address');
+        $user->phone = $request->get('phone');
+        $user->status = $request->get('status');
+
+        if ($request->file('avatar'))
+        {
+            if($user->avatar && file_exists(storage_path('app/public/' . $user->avatar)))
+            {
+                Storage::delete('public/' . $user->avatar);
+            }
+
+            $file = saveOriginalPhoto($request->file('avatar'), $request->username, 'user-avatars');
+
+            $user->avatar = $file;
+        }
+
+        $user->save();
+
+        $user->syncRoles($dataRoles);
+
+        return back()
+            ->with('status','User succesfully updated');
     }
 
     /**
@@ -81,6 +119,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if ($user->avatar != "")
+        {
+            Storage::delete('public/' . $user->avatar);
+        }
+
+        $user->delete();
+
+        return redirect()
+            ->route('users.index')
+            ->with('status', 'User successfully delete');
     }
 }

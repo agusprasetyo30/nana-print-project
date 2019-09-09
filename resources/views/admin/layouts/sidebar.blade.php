@@ -7,12 +7,13 @@
         </div>
     </li>
     <li class="header">MENU NAVIGATION</li>
-    <li class="{{Request::is('admin') ? 'active' : '' }}">
-        <a href="#">
+    <li class="{{Request::path() == 'admin' ? 'active' : '' }}">
+        <a href="{{ route('dashboard') }}">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+
         </a>
     </li>
-    <li class="{{Request::is('admin/users*') ? 'active' : '' }}">
+    <li class="{{Request::path() == 'admin/users' ? 'active' : '' }}">
         <a href="{{ route('users.index') }}">
             <i class="ion ion-person-stalker"></i> <span>Users</span>
         </a>
