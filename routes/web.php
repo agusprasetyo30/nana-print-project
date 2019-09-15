@@ -22,9 +22,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'admin'], function () {
 
     // nantinya ini menjadi home ketika login
-    Route::get('/', 'DashboardController@index')->name('dashboard');
-
+    Route::get('/', 'DashboardController@index')->name('admin.dashboard');
+    
     Route::resource('users', 'UserController', ['except' => ['show', 'edit']]);
+    
+    Route::get('/items', 'ItemController@index')->name('items.index');
+    Route::post('/items', 'ItemController@index')->name('items.post');
+    // Route::resource('items', 'ItemController');
 });
 
 

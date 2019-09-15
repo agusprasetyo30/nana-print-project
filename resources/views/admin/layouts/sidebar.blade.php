@@ -8,7 +8,7 @@
     </li>
     <li class="header">MENU NAVIGATION</li>
     <li class="{{Request::path() == 'admin' ? 'active' : '' }}">
-        <a href="{{ route('dashboard') }}">
+        <a href="{{ route('admin.dashboard') }}">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
 
         </a>
@@ -16,6 +16,11 @@
     <li class="{{Request::path() == 'admin/users' ? 'active' : '' }}">
         <a href="{{ route('users.index') }}">
             <i class="ion ion-person-stalker"></i> <span>Users</span>
+        </a>
+    </li>
+    <li class="{{Request::path() == 'admin/items' ? 'active' : '' }}">
+        <a href="{{ route('items.index') }}">
+            <i class="ion ion-ios-book"></i> <span>Barang</span>
         </a>
     </li>
     <li class="treeview">

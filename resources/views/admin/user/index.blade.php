@@ -39,8 +39,8 @@
                         </form>
                     </div>
                     <div class="col-md-4 col-xs-12">
-                        <ul class="nav nav-pills card-header-pills">
-                            <li class="nav-item
+                        <ul class="nav nav-pills nav-justified nav- card-header-pills">
+                            <li class=" nav-item
                                 {{ Request::path() == 'admin/users'
                                     && Request::get('role') == null ? 'active' : '' }}">
                                 <a href="{{ route('users.index') }}"
@@ -90,7 +90,9 @@
                         @foreach ($users as $user)
                             <tr>
                                 <td style="vertical-align: middle">{{ $number++ }}.</td>
-                                <td style="vertical-align: middle">{{ $user->name }}</td>
+                                <td style="vertical-align: middle">
+                                    {{ $user->name }}
+                                </td>
                                 <td style="vertical-align: middle">
                                     {{ $user->username }} <br>
                                     <small>( {{ $user->email }} )</small>
@@ -161,6 +163,7 @@
 
 @push('js')
 <script>
+    // Inputan nomer telepon
     function isNumberKey(evt){
         var charCode = (evt.which) ? evt.which : evt.keyCode
         if (charCode > 31 && (charCode < 48 || charCode > 57))
