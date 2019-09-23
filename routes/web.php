@@ -24,11 +24,17 @@ Route::group(['prefix' => 'admin'], function () {
     // nantinya ini menjadi home ketika login
     Route::get('/', 'DashboardController@index')->name('admin.dashboard');
     
-    Route::resource('users', 'UserController', ['except' => ['show', 'edit']]);
+    Route::resource('users', 'UserController', ['except' => ['show', 'edit', 'create']]);
     
-    Route::get('/items', 'ItemController@index')->name('items.index');
-    Route::post('/items', 'ItemController@index')->name('items.post');
-    // Route::resource('items', 'ItemController');
+    // Kategori
+    
+    Route::post('item/category/create', 'ItemController@storeCategory')->name('category.store');
+    Route::put('item/category/edit/{id}', 'ItemController@updateCategory')->name('category.update');
+    Route::delete('item/category/delete/{id}', 'ItemController@deleteCategory')->name('category.delete');
+    
+    Route::get('ajax/categories/search', 'ItemController@ajaxSearch');
+    
+    Route::resource('item', 'ItemController', ['except' => ['show', 'edit', 'create']]);
 });
 
 

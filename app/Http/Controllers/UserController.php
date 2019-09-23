@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 
 use App\User;
@@ -41,36 +42,42 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User;
+        try {
+            $user = new User;
 
-        $user->name = $request->get('name');
-        $user->username = $request->get('username');
-        $user->email = $request->get('email');
-        $user->password = Hash::make($request->get('password'));
-        $user->address = $request->get('address');
-        $user->phone = $request->get('phone');
-        $user->status = 'ACTIVE';
+            $user->name = $request->get('name');
+            $user->username = $request->get('username');
+            $user->email = $request->get('email');
+            $user->password = Hash::make($request->get('password'));
+            $user->address = $request->get('address');
+            $user->phone = $request->get('phone');
+            $user->status = 'ACTIVE';
 
-        $avatar = $request->file('avatar');
+            $avatar = $request->file('avatar');
 
-        if ($avatar)
-        {
-            $avatar_path = saveOriginalPhoto($avatar, $user->username, 'user-avatars');
+            if ($avatar)
+            {
+                $avatar_path = saveOriginalPhoto($avatar, $user->username, 'user-avatars');
 
-            $user->avatar = $avatar_path;
+                $user->avatar = $avatar_path;
 
-        } else {
+            } else {
 
-            $user->avatar = "";
+                $user->avatar = "";
+            }
+
+            $user->save();
+
+            $user->assignRole($request->role);
+
+            return redirect()
+                    ->route('users.index')
+                    ->with('status', 'User successfully add');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with(['status' => $e->getMessage()]);
         }
-
-        $user->save();
-
-        $user->assignRole($request->role);
-
-        return redirect()
-                ->route('users.index')
-                ->with('status', 'User successfully add');
     }
 
     /**

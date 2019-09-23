@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('page-title', 'Pengguna')
+@section('page-title', 'Manajemen Pengguna')
 
 @section('admin-role', 'admin')
 
@@ -17,8 +17,9 @@
         <div class="box">
             <div class="box-header">
                 @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>        
+                        {{session('status')}}
                     </div>
                 @endif
                 <hr>
@@ -60,17 +61,12 @@
                     </div>
                     <div class="col-md-2 col-xs-12" style="text-align: right; margin-top: 5px">
                         {{-- Tombol tambah --}}
-                        <a data-toggle="modal" data-target="#create-modal"
-                            class="btn btn-success btn-sm">
-                            <span class="fa fa-plus"></span> Tambah data</a>
+                        <a data-toggle="modal" data-target="#create-modal" data-backdrop="static"
+                            class="btn btn-success">
+                            <span class="fa fa-plus"></span> Tambah Pengguna</a>
                     </div>
                 </div>
             </div>
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible">
-                    {{session('success')}}
-                </div>
-            @endif
             <div  class="box-body table-responsive">
                 <table class="table table-striped table-hover table-bordered table-align-middle text-center">
                     <thead>
@@ -130,8 +126,8 @@
                                                 data-my-email="{{ $user->email }}" data-my-address="{{ $user->address }}"
                                                 data-my-phone="{{ $user->phone }}" data-my-avatar="{{ $user->avatar }}"
                                                 data-my-status="{{ $user->status }}" data-my-role="{{ $user->getRoleNames()[0] }}"
-                                                data-user-id="{{ $user->id }}"
-                                                data-toggle="modal" data-target="#edit-modal" class="btn btn-warning">
+                                                data-user-id="{{ $user->id }}"  
+                                                data-toggle="modal" data-target="#edit-modal" data-backdrop="static" class="btn btn-warning">
                                                 <span class="fa fa-chain"></span> Edit</a>
                                             {{-- Tombol Hapus --}}
                                             <button type="submit" class="btn btn-danger"
@@ -174,8 +170,9 @@
             return true;
         }
     }
-
+    
     $('#edit-modal').on('show.bs.modal', function (event) {
+        
         var button = $(event.relatedTarget)
         var name = button.data('my-name')
         var username = button.data('my-username')

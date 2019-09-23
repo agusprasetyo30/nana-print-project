@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Item;
+use App\Category;
 
 class ItemController extends Controller
 {
@@ -11,30 +13,17 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $field = $request->get('field_name');
-        $data[] = '';
+        $numberCategory = numberPagination(5);
+        $numberItem = numberPagination(5);
 
-        if ($field) {
-            for ($i=0; $i < count($field) ; $i++) { 
-                $data[$i] = $field[$i];  
-            }
-        }
+        $data['category'] = Category::all();
+        $data['item'] = Item::with('categories')->get();
 
-
-        return view('admin.item.index', compact('field', 'data'));
+        return view('admin.item.index', compact('data', 'numberCategory', 'numberItem'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -44,30 +33,36 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        
+        // $item->created_by = \Auth::user()->id;
+        $item = new Item;
+
+        $item->name = $request->get('name');
+        $item->description = $request->get('description');
+        $item->price = $request->get('price');
+        $item->stock = $request->get('stock');
+        $item->status = $request->get('status');
+        $item->created_by = 1;
+
+        $cover = $request->file('cover');
+
+        if ($cover) {
+            $cover_path = saveOriginalPhoto($cover, $request->get('name'), 'item-covers');
+            $item->cover = $cover_path;
+
+        } else {
+            $item->cover = "";
+        }
+
+        $item->save();
+
+        $item->categories()->attach($request->get('categories'));
+
+        return redirect()
+            ->route('item.index')
+            ->with('status', 'Item successfully add');
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -90,5 +85,55 @@ class ItemController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    // Membuat Kategori Item
+    public function storeCategory(Request $request)
+    {
+        $category = new Category;
+
+        $category->name = $request->get('name');
+        $category->save();
+
+        return redirect()
+            ->route('item.index')
+            ->with('status', 'Category successfully add');
+    }
+
+    // Mengedit kategori item
+    public function updateCategory(Request $request)
+    {
+        $id = $request->get('category_id');
+        $name = $request->get('name');
+
+        $category = Category::findOrFail($id);
+
+        $category->name = $name;
+        $category->save();
+
+        return back()
+            ->with('status','Category succesfully updated');
+    }
+
+    // Menghapus category
+    public function deleteCategory($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->items()->detach();
+        $category->delete();
+
+        return redirect()
+            ->route('item.index')
+            ->with('status', 'Category succesfully deleted');
+    }
+
+    // Pencarian data dengan ajax
+    public function ajaxSearch(Request $request)
+    {
+        $keyword = $request->get('q');
+
+        $categories = Category::where("name", "LIKE", "%$keyword%")->get();
+
+        return $categories;
     }
 }

@@ -18,7 +18,9 @@
                             name="name" id="user_name"
                             class="form-control"
                             value="{{ old('name') }}"
-                            placeholder="Masukan nama">
+                            placeholder="Masukan nama"
+                            autofocus=on
+                            required>
                 </div>
 
                 <div class="form-group">
@@ -27,7 +29,7 @@
                         name="username" id="user_username"
                         class="form-control"
                         value="{{ old('username') }}"
-                        placeholder="Masukan username">
+                        placeholder="Masukan username" required>
                 </div>
 
                 <div class="form-group">
@@ -37,7 +39,7 @@
                         name="email" id="user_email"
                         class="form-control"
                         value="{{ old('email') }}"
-                        placeholder="Masukan email">
+                        placeholder="Masukan email" required>
                 </div>
 
                 <div class="form-group">
@@ -45,7 +47,7 @@
                     <textarea name="address" id="user_address"
                         cols="30" rows="3"
                         class="form-control"
-                        placeholder="Masukan alamat">{{ old('address') }}</textarea>
+                        placeholder="Masukan alamat" required>{{ old('address') }}</textarea>
                 </div>
 
                 <div class="form-group">
@@ -56,19 +58,19 @@
                         onkeypress="return isNumberKey(event)"
                         maxlength="15"
                         value="{{ old('phone') }}"
-                        placeholder="Masukan nomor telepon">
+                        placeholder="Masukan nomor telepon" required>
                 </div>
 
                 <div class="form-group">
                     <label for="user_avatar">Avatar</label>
                     <input type="file"
                         name="avatar" id="user_avatar"
-                        class="form-control">
+                        class="form-control" required>
                 </div>
 
                 <div class="form-group">
                     <label for="user_role">Akses</label>
-                    <select name="role" id="user_role" class="form-control">
+                    <select name="role" id="user_role" class="form-control" required>
                         <option value="" selected disabled>Pilih Akses</option>
                         <option value="admin">Admin</option>
                         <option value="customer">Customer</option>
@@ -80,7 +82,7 @@
                     <input type="password"
                         name="password" id="user_password"
                         class="form-control"
-                        placeholder="Masukan password">
+                        placeholder="Masukan password" required>
                 </div>
 
                 <div class="form-group">
@@ -88,7 +90,7 @@
                     <input type="password"
                         name="password_confirmation" id="user_password_confirmation"
                         class="form-control"
-                        placeholder="Masukan konfirmasi password">
+                        placeholder="Masukan konfirmasi password" required>
                 </div>
             </div>
             <div class="modal-footer">

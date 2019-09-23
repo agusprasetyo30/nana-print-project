@@ -15,12 +15,12 @@
     </li>
     <li class="{{Request::path() == 'admin/users' ? 'active' : '' }}">
         <a href="{{ route('users.index') }}">
-            <i class="ion ion-person-stalker"></i> <span>Users</span>
+            <i class="ion ion-person-stalker"></i> <span>Pengguna</span>
         </a>
     </li>
-    <li class="{{Request::path() == 'admin/items' ? 'active' : '' }}">
-        <a href="{{ route('items.index') }}">
-            <i class="ion ion-ios-book"></i> <span>Barang</span>
+    <li class="{{Request::path() == 'admin/item' ? 'active' : '' }}">
+        <a href="{{ route('item.index') }}">
+            <i class="ion ion-ios-book"></i> <span>Item</span>
         </a>
     </li>
     <li class="treeview">
