@@ -11,8 +11,9 @@
 
                 <div class="col-md-12" style="text-align: center">
 
-                <form action="" method="post">
+                <form action="{{ route('stock.update', 'test') }}" method="post">
                 @csrf
+                @method('put')
 
                 <label for="stock">Stok item</label><br>
                 <div><b class="name"></b></div>
@@ -21,7 +22,7 @@
                         <a class="btn btn-primary" id="minusStock"><span class="fa fa-minus"></span></a>
                     </div>
                     
-                    <input type="text" class="form-control" style="text-align: center" name="dataStock" id="dataStock">
+                    <input type="text" class="form-control" style="text-align: center" name="data_stock" id="data_stock">
                     
                     <div class="input-group-btn">
                         <a class="btn btn-primary" id="plusStock"><span class="fa fa-plus"></span></a>

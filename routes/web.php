@@ -32,8 +32,12 @@ Route::group(['prefix' => 'admin'], function () {
     Route::put('item/category/edit/{id}', 'ItemController@updateCategory')->name('category.update');
     Route::delete('item/category/delete/{id}', 'ItemController@deleteCategory')->name('category.delete');
     
-    Route::get('ajax/categories/search', 'ItemController@ajaxSearch');
     
+    // Tambah Stock
+    Route::put('item/stock/{id}', 'ItemController@updateStock')->name('stock.update');
+    
+    Route::get('ajax/categories/search', 'ItemController@ajaxSearch');
+
     Route::resource('item', 'ItemController', ['except' => ['show', 'edit', 'create']]);
 });
 

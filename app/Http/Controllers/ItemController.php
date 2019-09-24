@@ -71,9 +71,41 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->get('item_id');
+        $name = $request->get('name');
+        $description = $request->get('description');
+        $price = $request->get('price');
+        $status = $request->get('status');
+        $categories = $request->get('categories');
+        
+        $cover = $request->file('cover');
+
+        $item = Item::findOrFail($id);
+
+        $item->name = $name;
+        $item->description = $description;
+        $item->price = $price;
+        $item->status = $status;
+        
+        if ($cover) {
+            if($item->cover && file_exists(storage_path('app/public/' . $item->cover))) {
+                Storage::delete('public/' . $item->cover);
+            }
+
+            $file = saveOriginalPhoto($cover, $name, 'item-covers');
+
+            $item->cover = $file;
+        }
+        
+        $item->save();
+
+        $item->categories()->sync($categories);
+
+        return redirect()
+            ->route('item.index')
+            ->with('status', 'Item successfully updated');
     }
 
     /**
@@ -84,7 +116,35 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Item::findOrFail($id);
+
+        if ($item->cover != "")
+        {
+            Storage::delete('public/' . $item->cover);
+        }
+
+        $item->categories()->detach();
+        $item->delete();
+
+        return redirect()
+            ->route('item.index')
+            ->with('status', 'Item successfully updated');
+    }
+
+    // Update stok item
+    public function updateStock(Request $request)
+    {
+        $id = $request->get('item_id');
+        $stock = $request->get('data_stock');
+
+        $item = Item::findOrFail($id);
+
+        $item->stock = $stock;
+
+        $item->save();
+
+        return back()
+            ->with('status','Stock succesfully updated');
     }
 
     // Membuat Kategori Item

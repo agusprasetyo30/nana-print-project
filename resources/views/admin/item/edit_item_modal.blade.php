@@ -1,15 +1,15 @@
-<div class="modal fade" id="add-item-modal" style="padding-right: 0px">
+<div class="modal fade" id="edit-item-modal" style="padding-right: 0px">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" id="dataClose" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Tambah Item</h4>
+                <h4 class="modal-title">Edit Item</h4>
             </div>
             <div class="modal-body">
-                <form action="{{ route('item.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('item.update', 'test') }}" method="post" enctype="multipart/form-data">
                     @csrf
-
+                    @method('put')
                     <label for="name">Nama</label>
                     <input type="text" class="form-control" 
                         name="name" id="name" placeholder="Masukan nama item" 
@@ -20,14 +20,22 @@
                         name="description" id="description" 
                         cols="30" rows="3" placeholder="Masukan deskripsi" required>{{ old('description') }}</textarea><br>
                     
-                    <label for="cover">Cover</label>
-                    <input type="file" name="cover" id="cover" class="form-control"><br>
+                    <div class="form-group">
+                        <label for="cover">Cover</label> <br>
+                        <small class="text-muted">Current cover</small><br>
+                        <img src="" class="foto" width="96px"><br><br>
+                        <input type="file"
+                            name="cover" id="cover"
+                            class="form-control">
+                        <small class="text-muted">Kosongkan jika tidak ingin mengubah cover</small>
+                    </div><br>
 
                     <label for="cover">Kategori</label>
                     <div class="form-group">                    
                         <select name="categories[]"
-                            id="dataCategories"
-                            class="form-control select2 select2-container" multiple="multiple" style="width: 100%; background: chartreuse">
+                            id="dataCategoriesEdit"
+                            class="form-control select2 select2-container" multiple="multiple" style="width: 100%; background: chartreuse"
+                            data-placeholder="Tambahkan kategori" required>
                         </select>
                     </div>
                     
@@ -38,26 +46,19 @@
                             min="0" value="{{ old('price') }}" name="price" id="price" 
                             placeholder="Masukan harga item" required>
                     </div> <br>
-                    
-                    <label for="stock">Stok</label>
-                    <input type="number" class="form-control" 
-                        min="0" value="{{ old('stock') }}" name="stock" id="stock"
-                        placeholder="Masukan total stok item" required> <br>
 
                     <label for="status">Status</label>
                     <select name="status" id="status" class="form-control">
-                        <option value="" selected disabled>Pilih Status</option>
                         <option value="SHOW">SHOW</option>
                         <option value="HIDE">HIDE</option>
                     </select>
 
+                    <input type="hidden" name="item_id" id="item_id">
+
                     <div class="text-right" style="margin-top: 10px">
-                        <input type="submit" class="btn btn-success" value="Simpan">
+                        <input type="submit" class="btn btn-warning" value="Update">
                     </div>
                 </form>                
-            </div>
-            <div class="modal-footer">
-                {{-- <button type="submit" class="btn btn-primary">Save</button> --}}
             </div>
         </div>
     </div>

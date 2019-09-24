@@ -113,14 +113,30 @@
                                     @endif
                                 </td>
                                 <td>
-                                    {{ $item->cover }}
-                                    
+                                    @if($item->cover)
+                                        <img src="{{asset('storage/' . $item->cover)}}"
+                                            width="96px"/>
+                                    @else
+                                        [ No Image ]
+                                    @endif
                                 </td>
                                 <td>
-                                    <div class="btn-group-vertical btn-group-sm">
-                                        <a href="#" class="btn btn-warning">EDIT</a>
-                                        <a href="#" class="btn btn-danger">HAPUS</a>
-                                    </div>
+                                    <form action="{{ route('item.destroy', $item->id) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <div class="btn-group-vertical btn-group-sm">
+                                            <a class="btn btn-warning"
+                                                data-toggle="modal" data-target="#edit-item-modal" data-backdrop="static"
+                                                data-item-name="{{ $item->name }}" data-item-description="{{ $item->description }}"
+                                                data-item-price="{{ $item->price }}" data-item-status="{{ $item->status }}"
+                                                data-item-cover="{{ $item->cover }}" data-item-id="{{ $item->id }}"
+                                                data-item-categories="{{ $item->categories }}">EDIT</a>
+                                            
+                                            <input type="submit" class="btn btn-danger" 
+                                                onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" 
+                                                value="HAPUS">
+                                        </div>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -142,6 +158,7 @@
 @include('admin.item.category_modal')
 @include('admin.item.edit_category_modal')
 @include('admin.item.add_item_modal')
+@include('admin.item.edit_item_modal')
 @include('admin.item.add_item_stock_modal')
 
 
@@ -150,72 +167,139 @@
 <script src="{{ asset('assets/admin/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
 
 <script>
-    $('#dataCategories').select2({
-        placeholder: 'Add Categories',
-        ajax: {
-            url : 'http://localhost:8000/admin/ajax/categories/search',
-            processResults: function (data) {
-                return {
-                    results: data.map(function(item) {
-                        return {
-                            // id : id nya, text: yang ditampilkan di list
-                            id: item.id,
-                            text: item.name
-                        }
-                    })
+    // Menampilkan ketegori menggunakan select2 (Tambah item)
+        $('#dataCategories').select2({
+            placeholder: 'Add Categories',
+            ajax: {
+                url : 'http://localhost:8000/admin/ajax/categories/search',
+                processResults: function (data) {
+                    return {
+                        results: data.map(function(item) {
+                            return {
+                                // id : id nya, text: yang ditampilkan di list
+                                id: item.id,
+                                text: item.name
+                            }
+                        })
+                    }
                 }
             }
-        }
-    });
+        });
+    //
 
-    $('#edit-category-modal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var category_name = button.data('category-name')
-        var category_id = button.data('category-id')
+    // Menampilkan modal edit kategori
+        $('#edit-category-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var category_name = button.data('category-name')
+            var category_id = button.data('category-id')
 
-        console.log(category_name, category_id);
+            console.log(category_name, category_id);
 
-        var modal = $(this)
-        modal.find('.modal-body #name').val(category_name)
-        modal.find('.modal-body #category_id').val(category_id)
+            var modal = $(this)
+            modal.find('.modal-body #name').val(category_name)
+            modal.find('.modal-body #category_id').val(category_id)
 
-    });
+        });
+    //
 
-    $('#add-item-stock-modal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var stock = button.data('item-stock')
-        var name = "[ " + button.data('item-name') + " ]"
-        var item_id = button.data('item-id')
+    // Menampilkan modal untuk edit stock
+        $('#add-item-stock-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var stock = button.data('item-stock')
+            var name = "[ " + button.data('item-name') + " ]"
+            var item_id = button.data('item-id')
 
-        
-        console.log(name, item_id, stock);
-        
-        var modal = $(this)
-        modal.find('.modal-body #dataStock').val(stock)
-        modal.find('.modal-body #item_id').val(item_id)
-        $(".modal-body .name").html(name);  
-    });
-    
+            
+            console.log(name, item_id, stock);
+            
+            var modal = $(this)
+            modal.find('.modal-body #data_stock').val(stock)
+            modal.find('.modal-body #item_id').val(item_id)
+            $(".modal-body .name").html(name);  
+        });
+    //
+
 
     // Untuk kurang dan tambah stock
-    var $plus = $('#plusStock');
-    var $minus = $('#minusStock');
-    var $data = $('#dataStock');
+        var $plus = $('#plusStock');
+        var $minus = $('#minusStock');
+        var $data = $('#data_stock');
 
-    $plus.click(function() {
-        $data.val(parseInt($data.val()) + 1);
-    });
+        $plus.click(function() {
+            $data.val(parseInt($data.val()) + 1);
+        });
 
-    $minus.click(function() {
-        if (parseInt($data.val()) <= 0) {
-            $data.val(0)    
-        } else {
-            $data.val(parseInt($data.val()) - 1);
-        }
-    });
-
+        $minus.click(function() {
+            if (parseInt($data.val()) <= 0) {
+                $data.val(0)    
+            } else {
+                $data.val(parseInt($data.val()) - 1);
+            }
+        });
+    //
     
+    // #EDIT ITEM //
 
+    // Menampilkan edit item dan mengisi data
+        $('#edit-item-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var item_id = button.data('item-id')
+            var item_name = button.data('item-name')
+            var item_description = button.data('item-description')
+            var item_price = button.data('item-price')
+            var item_status = button.data('item-status')
+            var item_categories = button.data('item-categories')
+            var item_cover = '{{ asset("storage") }}' + '/' + button.data('item-cover')
+
+            console.log(item_categories);
+
+            var modal = $(this)
+            modal.find('.modal-body #item_id').val(item_id)
+            modal.find('.modal-body #name').val(item_name)
+            modal.find('.modal-body #description').val(item_description)
+            modal.find('.modal-body #price').val(item_price)
+
+        // Memasukan data ke photo
+            $(".foto").attr("src", item_cover);
+
+        // Untuk select status
+            $(document).ready(() => { 
+                $('#status option[value=' + item_status + ']').attr('selected', 'selected'); 
+            });
+
+        // Menampilkan ketegori menggunakan select2 (Edit item)
+            $('#dataCategoriesEdit').select2({
+                placeholder: 'Add Categories',
+                ajax: {
+                    url : 'http://localhost:8000/admin/ajax/categories/search',
+                    processResults: function (data) {
+                        return {
+                            results: data.map(function(item) {
+                                return {
+                                    // id : id nya, text: yang ditampilkan di list
+                                    id: item.id,
+                                    text: item.name
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+
+        // Menampilkan inputan sesuai dengan kategori yg dipilih
+            item_categories.forEach(function(category){
+                var option = new Option(category.name, category.id, true, true);
+                $('#dataCategoriesEdit').append(option).trigger('change');
+            });
+
+        // Menghapus data inputan setelah di klik "close"
+            $('#dataClose').click(function() {
+                console.log("Close");
+                $('#dataCategoriesEdit').empty();
+            }); 
+        });
+        
+    // #EDIT ITEM //
 
 </script>
 @endpush
