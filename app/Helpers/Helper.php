@@ -39,6 +39,11 @@ function numberPagination($pagination)
     }
 
     return $number;
- }
+}
 
+
+function toRupiah($value)
+{
+   return 'Rp. '. number_format($value);  
+}
 ?>

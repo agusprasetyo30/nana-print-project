@@ -5,32 +5,37 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Item;
 use App\Category;
+use App\Paper;
 
 class ItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    // Menampilkan data item barang, kategori dan tipe kertas
+    public function index(Request $request)
     {
         $numberCategory = numberPagination(5);
         $numberItem = numberPagination(5);
 
+        $keyword = $request->get('keyword') ? $request->get('keyword') : '';
+        
+        
+        if ($keyword != '') {
+            $data['item'] = Item::with('categories')
+            ->where("name", "LIKE", "%$keyword%")
+            ->paginate(5);
+        } else {
+            $data['item'] = Item::with('categories')->get();
+        }
+        
         $data['category'] = Category::all();
-        $data['item'] = Item::with('categories')->get();
 
         return view('admin.item.index', compact('data', 'numberCategory', 'numberItem'));
     }
 
-
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * * BARANG/ITEM BARANG
      */
+
+    // Menambahkan data item barang
     public function store(Request $request)
     {
         // $item->created_by = \Auth::user()->id;
@@ -64,13 +69,7 @@ class ItemController extends Controller
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Update data item barang
     public function update(Request $request)
     {
         $id = $request->get('item_id');
@@ -108,12 +107,8 @@ class ItemController extends Controller
             ->with('status', 'Item successfully updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
+    // Hapus data item barang
     public function destroy($id)
     {
         $item = Item::findOrFail($id);
@@ -131,6 +126,10 @@ class ItemController extends Controller
             ->with('status', 'Item successfully updated');
     }
 
+    /**
+     * * STOCK BARANG
+     */
+
     // Update stok item
     public function updateStock(Request $request)
     {
@@ -146,6 +145,10 @@ class ItemController extends Controller
         return back()
             ->with('status','Stock succesfully updated');
     }
+
+    /**
+     * * KATEGORI
+     */
 
     // Membuat Kategori Item
     public function storeCategory(Request $request)
@@ -196,4 +199,76 @@ class ItemController extends Controller
 
         return $categories;
     }
+
+    /**
+     * * KERTAS
+     */
+
+    public function indexPaper(Request $request)
+    {
+        $keyword = $request->get('keyword') ? $request->get('keyword') : '';
+        $keywordType = $request->get('type');
+
+        $numberPaper = numberPagination(3);
+        
+        if ($keywordType) {
+            $data['paper'] = Paper::where("name", "LIKE", "%$keyword%")
+            ->where("type", "$keywordType")
+            ->paginate(3);
+
+        } else {
+            $data['paper'] = Paper::where("name", "LIKE", "%$keyword%")
+                ->paginate(3);
+        }
+
+        return view('admin.item.paper.index', compact('data', 'numberPaper'));
+    }
+
+    // Menambah tipe kertas
+    public function storePaper(Request $request)
+    {
+        $paper = new Paper;
+
+        $paper->name = $request->get('name');
+        $paper->price = $request->get('price');
+        $paper->type = $request->get('type');
+        
+        $paper->save();
+
+        return redirect()
+            ->route('paper.index')
+            ->with('status', 'Paper successfully add');
+    }
+
+    // Mengedit tipe kertas
+    public function updatePaper(Request $request)
+    {
+        $id = $request->get('paper_id');
+
+        $paper = Paper::findOrFail($id);
+        $paper->name = $request->get('name');
+        $paper->price = $request->get('price');
+        $paper->type = $request->get('type');
+
+        $paper->save();
+
+        return redirect()
+            ->route('paper.index')
+            ->with('status', 'Paper successfully updated');
+
+    }
+
+    // Mengedit tipe kertas
+    public function deletePaper($id)
+    {
+        $paper = Paper::findOrFail($id);
+
+        $paper->delete();
+
+        return redirect()
+            ->route('paper.index')
+            ->with('status', 'Paper successfully deleted');
+    }
+
+
 }

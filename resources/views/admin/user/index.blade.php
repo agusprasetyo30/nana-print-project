@@ -40,7 +40,7 @@
                         </form>
                     </div>
                     <div class="col-md-4 col-xs-12">
-                        <ul class="nav nav-pills nav-justified nav- card-header-pills">
+                        <ul class="nav nav-pills nav-justified nav-card-header-pills">
                             <li class=" nav-item
                                 {{ Request::path() == 'admin/users'
                                     && Request::get('role') == null ? 'active' : '' }}">
@@ -160,7 +160,8 @@
 @push('js')
 <script>
     // Inputan nomer telepon
-    function isNumberKey(evt){
+    function isNumberKey(evt)
+    {
         var charCode = (evt.which) ? evt.which : evt.keyCode
         if (charCode > 31 && (charCode < 48 || charCode > 57))
         {

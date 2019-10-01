@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
     <ol class="breadcrumb">
-        <li><a href="#"><i class="ion ion-ios-book"></i> Item</a></li>
+        <li><a href="{{ route('item.index') }}"><i class="ion ion-ios-book"></i> Item</a></li>
         <li class="active">Home</li>
     </ol>
 @endsection
@@ -43,11 +43,12 @@
                 <div class="row">
                     <div class="col-md-6 col-xs-12">
                         <form
-                            action="{{ route('users.index') }}">
+                            action="{{ route('item.index') }}">
                             <div class="input-group" style="margin: 5px">
                                 <input name="keyword" type="text"
                                     value="{{ Request::get('keyword') }}" class="form-control"
-                                        placeholder="Cari berdasarkan nama">
+                                        placeholder="Cari berdasarkan nama"
+                                        autocomplete="off">
 
                                     <div class="input-group-btn">
                                         <input type="submit" value="Search" class="btn btn-primary">
@@ -55,7 +56,7 @@
                                 {{-- <input type="hidden" name="role" value="{{ Request::get('role') }}"> --}}
                             </div>
                         </form>
-                        <a href="#" class="btn btn-info btn-sm" style="margin: 5px">
+                        <a href="{{ route('paper.index') }}" class="btn btn-info btn-sm" style="margin: 5px">
                                 <span class="fa fa-plus"></span> Tambah Tipe Kertas</a>
                     </div>
                     <div class="col-md-6 col-xs-12" style="text-align: right; margin-top: 5px">
@@ -97,7 +98,7 @@
                                     {{ $item->description }}
                                 </td>
                                 <td>
-                                    {{ $item->price }}                                    
+                                    {{ toRupiah($item->price) }}                                    
                                 </td>
                                 <td>
                                     <a class="stock" data-item-stock="{{ $item->stock }}" data-item-id="{{ $item->id }}"
@@ -160,6 +161,7 @@
 @include('admin.item.add_item_modal')
 @include('admin.item.edit_item_modal')
 @include('admin.item.add_item_stock_modal')
+{{-- @include('admin.item.kertas_modal') --}}
 
 
 
@@ -301,6 +303,19 @@
         
     // #EDIT ITEM //
 
+    // Inputan hanya angka
+    function isNumberKey(evt)
+    {
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+        {
+            return false;
+
+        } else {
+            return true;
+        }
+    }
+    //
 </script>
 @endpush
 

@@ -22,7 +22,8 @@
                         <a class="btn btn-primary" id="minusStock"><span class="fa fa-minus"></span></a>
                     </div>
                     
-                    <input type="text" class="form-control" style="text-align: center" name="data_stock" id="data_stock">
+                    <input type="text" class="form-control" onkeypress="return isNumberKey(event)"
+                        style="text-align: center" name="data_stock" id="data_stock" autofocus="on">
                     
                     <div class="input-group-btn">
                         <a class="btn btn-primary" id="plusStock"><span class="fa fa-plus"></span></a>

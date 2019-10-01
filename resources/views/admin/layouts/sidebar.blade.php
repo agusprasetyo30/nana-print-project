@@ -18,24 +18,22 @@
             <i class="ion ion-person-stalker"></i> <span>Pengguna</span>
         </a>
     </li>
-    <li class="{{Request::path() == 'admin/item' ? 'active' : '' }}">
+    <li class="{{Request::is('admin/item*') ? 'active' : '' }}">
         <a href="{{ route('item.index') }}">
             <i class="ion ion-ios-book"></i> <span>Item</span>
         </a>
     </li>
-    <li class="treeview">
-            <a href="#">
-                <i class="fa fa-photo"></i> <span>Galeri</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu">
-                {{-- <li class="{{Request::is('admin/photo*') ? 'active' : '' }}"> --}}
-                <li>
-                    <a href="#"><i class="fa fa-file-image-o"></i> Foto</a>
-                </li>
-            </ul>
+
+    <li class="header">TRANSAKSI</li>
+    <li class="">
+        <a href="{{ route('item.index') }}">
+            <i class="ion ion-printer"></i> <span>Transaksi Print</span>
+        </a>
+    </li>
+    <li class="">
+        <a href="{{ route('item.index') }}">
+            <i class="ion ion-ios-photos"></i> <span>Transaksi Foto</span>
+        </a>
     </li>
 
 </ul>

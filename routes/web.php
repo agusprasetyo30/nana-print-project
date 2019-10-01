@@ -27,15 +27,19 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('users', 'UserController', ['except' => ['show', 'edit', 'create']]);
     
     // Kategori
-    
     Route::post('item/category/create', 'ItemController@storeCategory')->name('category.store');
     Route::put('item/category/edit/{id}', 'ItemController@updateCategory')->name('category.update');
     Route::delete('item/category/delete/{id}', 'ItemController@deleteCategory')->name('category.delete');
     
-    
+    // Paper/kertas
+    Route::get('item/paper', 'ItemController@indexPaper')->name('paper.index');
+    Route::post('item/paper/create', 'ItemController@storePaper')->name('paper.store');
+    Route::put('item/paper/edit/{id}', 'ItemController@updatePaper')->name('paper.update');
+    Route::delete('item/paper/delete/{id}', 'ItemController@deletePaper')->name('paper.delete');
+
     // Tambah Stock
     Route::put('item/stock/{id}', 'ItemController@updateStock')->name('stock.update');
-    
+    // Untuk data select2 yang isinya data-data kategori
     Route::get('ajax/categories/search', 'ItemController@ajaxSearch');
 
     Route::resource('item', 'ItemController', ['except' => ['show', 'edit', 'create']]);
