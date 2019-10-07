@@ -18,4 +18,17 @@ class Item_order extends Model
         return $this->belongsToMany('App\Item', 'item_order_detail', 'item_order_id', 'item_id')
             ->withPivot('quantity');
     }
+
+    // Menghitung total item
+    public function getTotalQuantityAttribute()
+    {
+        $total_quantity = 0;
+
+        foreach ($this->item as $data)
+        {
+            $total_quantity += $data->pivot->quantity;
+        }
+
+        return $total_quantity;
+    }
 }

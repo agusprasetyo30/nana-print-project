@@ -25,6 +25,7 @@
                             <th style="vertical-align: middle" width="10px">#</th>
                             <th style="vertical-align: middle" width="100px">Status</th>
                             <th style="vertical-align: middle" width="150px">Customer</th>
+                            <th style="vertical-align: middle" width="100px">Total Price</th>
                             <th style="vertical-align: middle" width="150px">Jumlah beli</th>
                             <th style="vertical-align: middle" width="100px">Status Pengiriman</th>
                             <th style="vertical-align: middle" width="50px">Tanggal Transaksi</th>
@@ -42,8 +43,10 @@
                                     {{ $item->user->name }}
                                 </td>
                                 <td>
-                                    {{ $item->item->count() }} item
+                                    {{ toRupiah($item->total_price) }}
                                 </td>
+                                <td>
+                                    {{ $item->item->count() }} item
                                 </td>
                                 <td>
                                     @if ($item->sending_status == "KIRIM")

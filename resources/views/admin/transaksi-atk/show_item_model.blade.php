@@ -11,6 +11,9 @@
                               <div class="col-md-12" style="text-align: center; padding: 0px">   
                                     <div class="container-fluid">
                                           <div class="row" style="padding: 10px">
+                                                @php
+                                                    $total = 0;
+                                                @endphp
                                                 @foreach ($data->item()->where('item_order_id', '=', $data->id)->get() as $item)
                                                 <div class="col-md-12" style="background:#f7f7f7; margin-top: 5px; margin-bottom: 5px"> 
                                                       <div class="row">
@@ -19,26 +22,28 @@
                                                             </div>
                                                             <div class="col-md-7" style="padding: 10px; text-align: left">
                                                                   <div style="font-size: 20px">
-                                                                        {{ $item->name }}
+                                                                        <b> {{ $item->name }} </b>
                                                                   </div>
-                                                                  {{-- <hr> --}}
                                                                   <div class="title">
                                                                         {{ toRupiah($item->price) }}
                                                                   </div>
                                                             </div>
                                                             <div class="col-md-2" style="padding:0; padding-bottom: 25px; padding-top: 25px">
-                                                                  {{ $item->pivot->quantity }} x
+                                                                  {{ $item->pivot->quantity }}x
                                                             </div>
                                                       </div>
                                                 </div>
+                                                @php $total = $total + ($item->price * $item->pivot->quantity) @endphp
+
                                                 @endforeach
+                                          </div>
+                                          
+                                          <div style="float:left; font-weight: bold; font-size: 15px">
+                                                {{ $data->totalQuantity }} items | {{ toRupiah($total) }}
                                           </div>
                                     </div>
                               </div>
                         </div>
-                  </div>
-                  <div class="modal-footer">
-                        {{-- <button type="submit" class="btn btn-primary">Save</button> --}}
                   </div>
             </div>
       </div>

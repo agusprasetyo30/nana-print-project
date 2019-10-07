@@ -23,8 +23,8 @@ class TransaksiAtkController extends Controller
             ->with('item')
             ->get();
 
-        // foreach ($order_item->item()->where('item_order_id', '=', 1)->get() as $data) {
-            // echo $data->name;
+        // foreach ($order_item as $data) {
+        //     echo $data->totalQuantity;
         // }
 
         return view('admin.transaksi-atk.index', compact('orders', 'order_item'));
