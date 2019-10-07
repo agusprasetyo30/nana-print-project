@@ -20,7 +20,7 @@
         <div class="alert alert-success alert-dismissible" style="margin: 14px">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>        
             {{session('status')}}
-        </div>
+        </div>  
     @endif
     <div class="col-md-4 col-xs-12">
         <div class="box box-success">
@@ -135,7 +135,8 @@
                                             data-paper-name="{{ $paper->name }}" data-paper-price="{{ $paper->price }}"
                                             data-paper-type="{{ $paper->type }}" data-paper-id="{{ $paper->id }}">Edit</a>
                                         
-                                        <input type="submit" onclick="return confirm('Apakah anda ingin menghapus jenis kertas ini ?')" class="btn btn-danger btn-sm" value="Hapus">
+                                        <input type="submit" onclick="return confirm('Apakah anda ingin menghapus jenis kertas ini ?')" 
+                                        class="btn btn-danger btn-sm" value="Hapus">
                                     </form>
                                 </div>
                             </td>

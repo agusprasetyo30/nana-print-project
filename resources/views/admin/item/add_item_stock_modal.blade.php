@@ -31,7 +31,7 @@
                 </div>
                 <input type="hidden" name="item_id" id="item_id">
                 <input type="submit" class="btn btn-success btn-block" value="Simpan">
-                 
+                
             </form>
         </div>
     </div>

@@ -22,7 +22,7 @@
                                         required>
 
                                     <div style="text-align: right; margin-top: 10px;">
-                                        <input type="submit" class="btn btn-success" value="Simpan">
+                                        <input type="submit" name="submit" class="btn btn-success" value="Simpan">
                                     </div>
                                 </div>
                             </form>

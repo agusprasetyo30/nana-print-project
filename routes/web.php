@@ -43,6 +43,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('ajax/categories/search', 'ItemController@ajaxSearch');
 
     Route::resource('item', 'ItemController', ['except' => ['show', 'edit', 'create']]);
+
+    // Transaksi ATK
+    Route::get('item-order', 'TransaksiAtkController@index')->name('order-atk.index');
+    Route::get('item-order/{id}/show', 'TransaksiAtkController@show')->name('order-atk.show');
 });
 
 

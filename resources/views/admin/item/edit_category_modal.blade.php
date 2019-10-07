@@ -7,7 +7,7 @@
                <h4 class="modal-title">Edit Kategori</h4>
            </div>
            <div class="modal-body">
-               <form action="{{ route('category.update', 'test') }}" method="post">
+                <form action="{{ route('category.update', 'test') }}" method="post">
                     @csrf
                     @method('put')
                     <label for="name">Nama Kategori</label>
@@ -19,14 +19,14 @@
                         required>
 
                     <input type="hidden" name="category_id" id="category_id">
-                  <div class="text-right" style="margin-top: 10px;">
-                     <input type="submit" class="btn btn-warning" value="Update">
-                  </div>
-               </form>
-           </div>
-           <div class="modal-footer">
-               {{-- <button type="submit" class="btn btn-primary">Save</button> --}}
-           </div>
+                    <div class="text-right" style="margin-top: 10px;">
+                        <input type="submit" class="btn btn-warning" value="Update">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                {{-- <button type="submit" class="btn btn-primary">Save</button> --}}
+            </div>
        </div>
    </div>
 </div>

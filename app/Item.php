@@ -13,4 +13,10 @@ class Item extends Model
         return $this->belongsToMany('App\Category', 'item_category', 'item_id', 'category_id');
         // return $this->belongsToMany('App\Category');
     }
+
+    public function item_order()
+    {
+        return $this->belongsToMany('App\Item_order', 'item_order_detail', 'item_id', 'item_order_id');
+    }
+    
 }

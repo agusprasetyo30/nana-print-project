@@ -44,6 +44,6 @@ function numberPagination($pagination)
 
 function toRupiah($value)
 {
-   return 'Rp. '. number_format($value);  
+   return 'Rp. '. number_format($value, 0, ",", ".");  
 }
 ?>

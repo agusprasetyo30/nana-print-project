@@ -55,7 +55,7 @@
 </div>
 <div class="box">
     <div class="box-body">
-        Nantinya ini tabel ketika di klik datanya
+        Belum ada ide untuk menampilkan data apa
     </div>
 </div>
 @endsection

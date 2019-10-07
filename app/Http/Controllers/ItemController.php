@@ -156,6 +156,7 @@ class ItemController extends Controller
         $category = new Category;
 
         $category->name = $request->get('name');
+        
         $category->save();
 
         return redirect()

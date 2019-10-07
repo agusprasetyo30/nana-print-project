@@ -32,7 +32,7 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
-            <div class="box-header">
+            <div class="box-header" style="font">
                 @if (session('status'))
                     <div class="alert alert-success alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>        
@@ -200,7 +200,6 @@
             var modal = $(this)
             modal.find('.modal-body #name').val(category_name)
             modal.find('.modal-body #category_id').val(category_id)
-
         });
     //
 
