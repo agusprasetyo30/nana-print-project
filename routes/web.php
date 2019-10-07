@@ -45,8 +45,14 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('item', 'ItemController', ['except' => ['show', 'edit', 'create']]);
 
     // Transaksi ATK
-    Route::get('item-order', 'TransaksiAtkController@index')->name('order-atk.index');
-    Route::get('item-order/{id}/show', 'TransaksiAtkController@show')->name('order-atk.show');
+    Route::get('order-atk', 'TransaksiAtkController@index')->name('order-atk.index');
+
+    // Transaksi Print
+    Route::get('order-print', 'TransaksiPrintController@index')->name('order-print.index');
+
+    // Laporan Keuangan
+    Route::get('money-report', 'LaporanKeuanganController@index')->name('money-report.index');
+
 });
 
 

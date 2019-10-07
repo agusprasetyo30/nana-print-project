@@ -3,31 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Item_order;
 
-class TransaksiAtkController extends Controller
+class LaporanKeuanganController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        
-        $orders = Item_order::with('user')
-            ->with('item')
-            ->get();
-        
-        $order_item = Item_order::with('user')
-            ->with('item')
-            ->get();
+        return view('admin.laporan-keuangan.index');        
+    }
 
-        // foreach ($order_item as $data) {
-        //     echo $data->totalQuantity;
-        // }
-
-        return view('admin.transaksi-atk.index', compact('orders', 'order_item'));
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -49,7 +45,7 @@ class TransaksiAtkController extends Controller
      */
     public function show($id)
     {
-
+        //
     }
 
     /**

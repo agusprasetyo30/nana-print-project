@@ -26,19 +26,19 @@
     </li>
 
     <li class="header">MENU TRANSAKSI</li>
-    <li class="{{Request::path() == 'admin/item-order' ? 'active' : '' }}">
+    <li class="{{Request::path() == 'admin/order-atk' ? 'active' : '' }}">
         <a href="{{ route('order-atk.index') }}">
             <i class="ion ion-ios-photos"></i> <span>Transaksi ATK</span>
         </a>
     </li>
-    <li class="">
-        <a href="{{ route('item.index') }}">
+    <li class="{{Request::path() == 'admin/order-print' ? 'active' : '' }}">
+        <a href="{{ route('order-print.index') }}">
             <i class="ion ion-printer"></i> <span>Transaksi Print & Foto</span>
         </a>
     </li>
     <li class="header">KEUANGAN</li>
-    <li class="">
-        <a href="{{ route('item.index') }}">
+    <li class="{{Request::path() == 'admin/money-report' ? 'active' : '' }}">
+        <a href="{{ route('money-report.index') }}">
             <i class="ion ion-ios-paper"></i> <span>Laporan Keuangan</span>
         </a>
     </li>
