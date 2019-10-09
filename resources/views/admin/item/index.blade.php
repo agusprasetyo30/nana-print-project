@@ -32,7 +32,7 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
-            <div class="box-header" style="font">
+            <div class="box-header">
                 @if (session('status'))
                     <div class="alert alert-success alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>        
