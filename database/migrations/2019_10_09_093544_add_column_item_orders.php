@@ -14,7 +14,7 @@ class AddColumnItemOrders extends Migration
     public function up()
     {
         Schema::table('print_orders', function (Blueprint $table) {
-            $table->text('description')->after('file');            
+            $table->text('description')->after('file')->default(NULL);            
         });
     }
 

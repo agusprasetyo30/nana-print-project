@@ -12,7 +12,7 @@
                                     <div class="container-fluid">
                                           <div class="row" style="padding: 10px">
                                                 @php
-                                                    $total = 0;
+                                                      $total = 0;
                                                 @endphp
                                                 @foreach ($data->item()->where('item_order_id', '=', $data->id)->get() as $item)
                                                 <div class="col-md-12" style="background:#f7f7f7; margin-top: 5px; margin-bottom: 5px"> 

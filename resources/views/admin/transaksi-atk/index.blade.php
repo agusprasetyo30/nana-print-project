@@ -39,33 +39,33 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-md-4 col-xs-12">
+                    <div class="col-md-6 col-xs-12">
                         <ul class="nav nav-pills nav-justified nav-card-header-pills">
                             <li class=" nav-item
                                 {{ Request::path() == 'admin/order-atk'
                                     && Request::get('status') == null ? 'active' : '' }}">
                                 <a href="{{ route('users.index') }}"
-                                    class="nav-link"><b>ALL</b> (10)</a>
+                                    class="nav-link"><b>ALL</b> <br>(10)</a>
                             </li>
                             <li class="nav-item
                                 {{ Request::get('role') == 'admin' ? 'active' : '' }}">
                                 <a href="{{ route('users.index', ['role' => 'admin']) }}"
-                                    class="nav-link"><b>CART</b> (5)</a>
+                                    class="nav-link"><b>CART</b> <br>(5)</a>
                             </li>
                             <li class="nav-item
                                 {{ Request::get('role') == 'customer' ? 'active' : '' }}">
                                 <a href="{{ route('users.index', ['role' => 'customer']) }}"
-                                    class="nav-link"><b>SUBMIT</b> (0)</a>
+                                    class="nav-link"><b>SUBMIT</b> <br>(0)</a>
                             </li>
                             <li class="nav-item
                                 {{ Request::get('role') == 'customer' ? 'active' : '' }}">
                                 <a href="{{ route('users.index', ['role' => 'customer']) }}"
-                                    class="nav-link"><b>PROCESS</b> (3)</a>
+                                    class="nav-link"><b>PROCESS</b> <br>(3)</a>
                             </li>
                             <li class="nav-item
                                 {{ Request::get('role') == 'customer' ? 'active' : '' }}">
                                 <a href="{{ route('users.index', ['role' => 'customer']) }}"
-                                    class="nav-link"><b>FINISH</b> (2)</a>
+                                    class="nav-link"><b>FINISH</b> <br>(2)</a>
                             </li>
                         </ul>
                     </div>
@@ -122,7 +122,7 @@
                                     <span class="label label-info">{{ date('d F Y', strtotime($item->created_at)) }}</span>
                                 </td>
                                 <td>
-                                    <div class="btn-group">
+                                    <div class="btn-group-sm">
                                             <a role="button" data-toggle="modal" data-target="#show-item-order-modal-{{ $item->id }}" data-backdrop="static" class="btn btn-success btn-sm" 
                                                 item-id = {{ $item->id }} >Show</a>                                            
                                             <a class="btn btn-warning btn-sm"
