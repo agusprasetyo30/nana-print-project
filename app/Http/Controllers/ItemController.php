@@ -65,7 +65,6 @@ class ItemController extends Controller
         return redirect()
             ->route('item.index')
             ->with('status', 'Item successfully add');
-
     }
 
 

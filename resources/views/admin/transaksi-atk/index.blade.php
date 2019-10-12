@@ -11,6 +11,16 @@
     </ol>
 @endsection
 
+@push('css')
+    <style>
+        .blink{
+            background: #470000 !important;
+            border: 1px solid black;
+            color: white;
+        }
+    </style>
+@endpush
+
 @section('content')
 <div class="row">
     <div class="col-xs-12">
@@ -26,17 +36,17 @@
                 <div class="row">
                     <div class="col-md-6 col-xs-12">
                         <form
-                            action="{{ route('users.index') }}">
+                            action="{{ route('order-atk.index') }}">
                             <div class="input-group" style="margin: 5px">
                                 <input name="keyword" type="text"
                                     value="{{ Request::get('keyword') }}" class="form-control"
-                                        placeholder="Cari berdasarkan nama">
+                                        placeholder="Cari berdasarkan nama customer">
 
                                     <div class="input-group-btn">
                                         <input type="submit" value="Search" class="btn btn-primary">
                                     </div>
-                                <input type="hidden" name="role" value="{{ Request::get('role') }}">
                             </div>
+                            <input type="hidden" name="status" value="{{ Request::get('status') }}">
                         </form>
                     </div>
                     <div class="col-md-6 col-xs-12">
@@ -44,28 +54,28 @@
                             <li class=" nav-item
                                 {{ Request::path() == 'admin/order-atk'
                                     && Request::get('status') == null ? 'active' : '' }}">
-                                <a href="{{ route('users.index') }}"
-                                    class="nav-link"><b>ALL</b> <br>(10)</a>
+                                <a href="{{ route('order-atk.index') }}"
+                                    class="nav-link"><b>ALL</b> <br>({{ $order_item->count() }})</a>
                             </li>
                             <li class="nav-item
-                                {{ Request::get('role') == 'admin' ? 'active' : '' }}">
-                                <a href="{{ route('users.index', ['role' => 'admin']) }}"
-                                    class="nav-link"><b>CART</b> <br>(5)</a>
+                                {{ Request::get('status') == 'CART' ? 'active' : '' }}">
+                                <a href="{{ route('order-atk.index', ['status' => 'CART']) }}"
+                                    class="nav-link"><b>CART</b> <br>({{ $order_item->where("status", "=", "CART")->count() }})</a>
                             </li>
                             <li class="nav-item
-                                {{ Request::get('role') == 'customer' ? 'active' : '' }}">
-                                <a href="{{ route('users.index', ['role' => 'customer']) }}"
-                                    class="nav-link"><b>SUBMIT</b> <br>(0)</a>
+                                {{ Request::get('status') == 'SUBMIT' ? 'active' : '' }}">
+                                <a href="{{ route('order-atk.index', ['status' => 'SUBMIT']) }}"
+                                    class="nav-link"><b>SUBMIT</b> <br>({{ $order_item->where("status", "=", "SUBMIT")->count() }})</a>
                             </li>
                             <li class="nav-item
-                                {{ Request::get('role') == 'customer' ? 'active' : '' }}">
-                                <a href="{{ route('users.index', ['role' => 'customer']) }}"
-                                    class="nav-link"><b>PROCESS</b> <br>(3)</a>
+                                {{ Request::get('status') == 'PROCESS' ? 'active' : '' }}">
+                                <a href="{{ route('order-atk.index', ['status' => 'PROCESS']) }}"
+                                    class="nav-link"><b>PROCESS</b> <br>({{ $order_item->where("status", "=", "PROCESS")->count() }})</a>
                             </li>
                             <li class="nav-item
-                                {{ Request::get('role') == 'customer' ? 'active' : '' }}">
-                                <a href="{{ route('users.index', ['role' => 'customer']) }}"
-                                    class="nav-link"><b>FINISH</b> <br>(2)</a>
+                                {{ Request::get('status') == 'FINISH' ? 'active' : '' }}">
+                                <a href="{{ route('order-atk.index', ['status' => 'FINISH']) }}"
+                                    class="nav-link"><b>FINISH</b> <br>({{ $order_item->where("status", "=", "FINISH")->count() }})</a>
                             </li>
                         </ul>
                     </div>
@@ -88,7 +98,7 @@
                     <tbody>
                         @foreach ($orders as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
+                                <td>{{ $numberOrders++ }}.</td>
                                 <td>
                                     @if ($item->status == 'CART')
                                         <a href=""> <span class="label label-danger">{{ $item->status }}</span></a>
@@ -126,7 +136,8 @@
                                             <a role="button" data-toggle="modal" data-target="#show-item-order-modal-{{ $item->id }}" data-backdrop="static" class="btn btn-success btn-sm" 
                                                 item-id = {{ $item->id }} >Show</a>                                            
                                             <a class="btn btn-warning btn-sm"
-                                                data-toggle="modal" data-target="#edit-status-modal" data-backdrop="static">Edit</a>
+                                                data-toggle="modal" data-target="#edit-status-modal" data-backdrop="static"
+                                                    data-order-atk-status={{ $item->status }} data-order-atk-id={{ $item->id }}>Edit</a>
                                         </form>
                                     </div>
                                 </td>
@@ -137,7 +148,7 @@
                         <tr>
                             <td colspan="10">
                                 {{-- Pagination --}}
-                                {{-- {{$users->appends(Request::all())->links()}} --}}
+                                {{ $orders->appends(Request::all())->links() }}
                             </td>
                         </tr>
                     </tfoot>
@@ -149,12 +160,88 @@
 
 @include('admin.transaksi-atk.edit_status_modal')
 
-@foreach ($order_item as $data)
+@foreach ($orders as $data)
     @include('admin.transaksi-atk.show_item_model')
 @endforeach
 
     
 @push('js')
+    <script>
+        $('#edit-status-modal').on('show.bs.modal', function (event) {
+            
+            var timer = null;
+            var button = $(event.relatedTarget)
+            var status = button.data('order-atk-status')
+            var id = button.data('order-atk-id')
+
+            var modal = $(this)
+            modal.find('.modal-body #order_atk_id').val(id)
+
+            timer = setInterval(function() {
+                
+                if (status == "CART") {
+                    buttonCartEnabled()
+                    $('#status-cart').toggleClass('blink')
+                    
+                } else if (status == "SUBMIT") {
+                    $('#status-submit').toggleClass('blink')
+                    buttonCartEnabled()
+                    buttonSubmitEnabled()
+
+                } else if (status == "PROCESS") {
+                    $('#status-process').toggleClass('blink')
+                    buttonCartEnabled()
+                    buttonSubmitEnabled()
+                    buttonProcessEnabled()
+
+                } else if (status == "FINISH") {
+                    $('#status-finish').toggleClass('blink')
+                    buttonCartEnabled()
+                    buttonSubmitEnabled()
+                    buttonProcessEnabled()
+                    buttonFinishEnabled()
+                }
+
+            } ,500);
+
+            function buttonCartEnabled()
+            {
+                $('#status-cart').addClass('disabled')                
+            }
+
+            function buttonSubmitEnabled()
+            {
+                $('#status-submit').addClass('disabled')
+            }
+
+            function buttonProcessEnabled()
+            {
+                $('#status-process').addClass('disabled')
+            }
+
+            function buttonFinishEnabled()
+            {
+                $('#status-finish').addClass('disabled')
+            }
+
+            function disabledButtonStatus() 
+            {
+                $('#status-cart').removeClass('disabled')
+                $('#status-cart').removeClass('blink')
+                $('#status-submit').removeClass('disabled')
+                $('#status-submit').removeClass('blink')
+                $('#status-process').removeClass('disabled')
+                $('#status-process').removeClass('blink')
+                $('#status-finish').removeClass('disabled')
+                $('#status-finish').removeClass('blink')
+            }
+
+            $('#dataClose').click(function() {
+                clearInterval(timer)
+                disabledButtonStatus()
+            });
+        })
+    </script>
 @endpush
 
 @endsection

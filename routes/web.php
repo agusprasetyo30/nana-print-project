@@ -46,6 +46,7 @@ Route::group(['prefix' => 'admin'], function () {
 
     // Transaksi ATK
     Route::get('order-atk', 'TransaksiAtkController@index')->name('order-atk.index');
+    Route::put('order-atk/edit/{id}', 'TransaksiAtkController@updateStatus')->name('order-atk.update-status');
 
     // Transaksi Print
     Route::get('order-print', 'TransaksiPrintController@index')->name('order-print.index');
