@@ -50,6 +50,8 @@ Route::group(['prefix' => 'admin'], function () {
 
     // Transaksi Print
     Route::get('order-print', 'TransaksiPrintController@index')->name('order-print.index');
+    Route::get('order-print/{id}/download', 'TransaksiPrintController@downloadFile')->name('order-print.download');
+
 
     // Laporan Keuangan
     Route::get('money-report', 'LaporanKeuanganController@index')->name('money-report.index');

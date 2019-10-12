@@ -32,6 +32,11 @@
             color: white;
         }
 
+        .blink{
+            background: #470000 !important;
+            border: 1px solid black;
+            color: white;
+        }
     </style>
 @endpush
 
@@ -121,41 +126,54 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1.</td>
-                            <td>Agus Prasetyo <br> 
-                                <small>agusprasetyo1889@gmail.com</small>
-                            </td>
-                            <td>
-                                Rp. 15.000
-                            </td>
-                            <td>
-                                <a href="#" class="jumlah-item"
-                                    data-toggle="modal" data-target="#show-print-order-modal" data-backdrop="static">2 Items</a>
-                            </td>
-                            <td>
-                                <span class="label label-info">PRINT</span>
-                            </td>
-                            <td>
-                                <span class="label label-primary">SUBMIT</span>
-                            </td>
-                            <td>
-                                <span class="label label-info">{{ date('d F Y', strtotime(Carbon\Carbon::now())) }}</span>
-                            </td>
-                            <td>
-                                <div class="btn-group-sm">
-                                    <a href="#" class="btn btn-primary btn-sm" >Download</a>
-                                    <a href="#" class="btn btn-warning btn-sm"
-                                        data-toggle="modal" data-target="#edit-status-modal" data-backdrop="static">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
+                        @foreach ($orders as $data)                            
+                            <tr>
+                                <td>{{ $numberOrders++ }}</td>
+                                <td>{{ $data->user->name }} <br> 
+                                    <small>{{ $data->user->email }}</small>
+                                </td>
+                                <td>
+                                    {{ toRupiah($data->total_price) }}
+                                </td>
+                                <td>
+                                    <a href="#" class="jumlah-item"
+                                        data-toggle="modal" data-target="#show-print-order-modal-{{ $data->id }}" data-backdrop="static">{{ $data->paper->count() }} Items</a>
+                                </td>
+                                <td>
+                                    @if ($data->type == "PRINT")
+                                        <span class="label label-danger">PRINT</span>
+                                    @elseif ($data->type == "PHOTO")
+                                        <span class="label label-info">PHOTO</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($data->status == "SUBMIT")
+                                        <span class="label label-primary">SUBMIT</span>
+                                    @elseif ($data->status == "PROCESS")
+                                        <span class="label label-warning">PROCESS</span>
+                                    @elseif ($data->status == "FINISH")
+                                        <span class="label label-success">FINISH</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <span class="label label-info">{{ date('d F Y', strtotime($data->created_at)) }}</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group-sm">
+                                        <a href="{{ route('order-print.download', $data->id ) }}" class="btn btn-primary btn-sm" >Download</a>
+                                        <a href="#" class="btn btn-warning btn-sm"
+                                            data-toggle="modal" data-target="#edit-status-modal" data-backdrop="static"
+                                            data-order-print-status={{ $data->status }}>Edit</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach                        
                     </tbody>
                     <tfoot>
                         <tr>
                             <td colspan="10">
                                 {{-- Pagination --}}
-                                {{-- {{$users->appends(Request::all())->links()}} --}}
+                                {{$orders->appends(Request::all())->links()}}
                             </td>
                         </tr>
                     </tfoot>
@@ -166,9 +184,73 @@
 </div>
 
 @include('admin.transaksi-print.edit_status_modal')
-@include('admin.transaksi-print.show_print_model')
+
+@foreach ($orders as $data)
+    @include('admin.transaksi-print.show_print_model')
+@endforeach
 
 @push('js')
+<script>
+        $('#edit-status-modal').on('show.bs.modal', function (event) {
+            
+            var timer = null;
+            var button = $(event.relatedTarget)
+            var status = button.data('order-print-status')
+            // var id = button.data('order-atk-id')
+
+            var modal = $(this)
+            // modal.find('.modal-body #order_atk_id').val(id)
+
+            timer = setInterval(function() {
+                if (status == "SUBMIT") {
+                    $('#status-submit').toggleClass('blink')
+                    buttonSubmitEnabled()
+
+                } else if (status == "PROCESS") {
+                    $('#status-process').toggleClass('blink')
+                    buttonSubmitEnabled()
+                    buttonProcessEnabled()
+
+                } else if (status == "FINISH") {
+                    $('#status-finish').toggleClass('blink')
+                    buttonSubmitEnabled()
+                    buttonProcessEnabled()
+                    buttonFinishEnabled()
+                }
+
+            } ,500);
+
+            function buttonSubmitEnabled()
+            {
+                $('#status-submit').addClass('disabled')
+            }
+
+            function buttonProcessEnabled()
+            {
+                $('#status-process').addClass('disabled')
+            }
+
+            function buttonFinishEnabled()
+            {
+                $('#status-finish').addClass('disabled')
+            }
+
+            function disabledButtonStatus() 
+            {
+                $('#status-submit').removeClass('disabled')
+                $('#status-submit').removeClass('blink')
+                $('#status-process').removeClass('disabled')
+                $('#status-process').removeClass('blink')
+                $('#status-finish').removeClass('disabled')
+                $('#status-finish').removeClass('blink')
+            }
+
+            $('#dataClose').click(function() {
+                clearInterval(timer)
+                disabledButtonStatus()
+            });
+        })
+    </script>
 @endpush
 
 @endsection
