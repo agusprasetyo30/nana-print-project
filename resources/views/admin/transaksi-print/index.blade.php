@@ -37,6 +37,11 @@
             border: 1px solid black;
             color: white;
         }
+
+        .nav-pills > li.active-type > a {
+            background: sienna;
+            color: white;
+        }
     </style>
 @endpush
 
@@ -55,7 +60,7 @@
                 <div class="row">
                     <div class="col-md-5 col-xs-12">
                         <form
-                            action="{{ route('users.index') }}">
+                            action="{{ route('order-print.index') }}">
                             <div class="input-group" style="margin: 5px">
                                 <input name="keyword" type="text"
                                     value="{{ Request::get('keyword') }}" class="form-control"
@@ -64,27 +69,28 @@
                                     <div class="input-group-btn">
                                         <input type="submit" value="Search" class="btn btn-primary">
                                     </div>
-                                <input type="hidden" name="role" value="{{ Request::get('role') }}">
+                                <input type="hidden" name="status" value="{{ Request::get('status') }}">
+                                <input type="hidden" name="type" value="{{ Request::get('type') }}">
                             </div>
                         </form>
                     </div>
                     <div class="col-md-3 col-xs-6">
                         <ul class="nav nav-pills nav-justified nav-card-header-pills">
-                            <li class=" nav-item
-                                {{ Request::path() == 'admin/order-atk'
-                                    && Request::get('status') == null ? 'active' : '' }}" style="background: sienna; ">
-                                <a href="{{ route('users.index') }}"
-                                    class="nav-link" style="color: white"><b>ALL</b> <br>(10)</a>
+                            <li class="nav-item
+                                {{ Request::path() == 'admin/order-print'
+                                    && Request::get('type') == null ? 'active-type' : '' }}">
+                                <a href="{{ route('order-print.index') }}"
+                                    class="nav-link"><b>ALL</b> <br>({{ $print_orders->count() }})</a>
                             </li>
                             <li class="nav-item
-                                {{ Request::get('role') == 'admin' ? 'active' : '' }}">
-                                <a href="{{ route('users.index', ['role' => 'admin']) }}"
-                                    class="nav-link"><b>PRINT</b> <br>(5)</a>
+                                {{ Request::get('type') == 'PRINT' ? 'active-type' : '' }}">
+                                <a href="{{ route('order-print.index', ['status' => Request::get('status') ? Request::get('status') : '' ,'type' => 'PRINT']) }}"
+                                    class="nav-link"><b>PRINT</b> <br>({{ $print_orders->where("type", "=", "PRINT")->count() }})</a>
                             </li>
                             <li class="nav-item
-                                {{ Request::get('role') == 'customer' ? 'active' : '' }}" >
-                                <a href="{{ route('users.index', ['role' => 'customer']) }}"
-                                    class="nav-link"><b>PHOTO</b> <br>(0)</a>
+                                {{ Request::get('type') == 'PHOTO' ? 'active-type' : '' }}" >
+                                <a href="{{ route('order-print.index', ['status' => Request::get('status') ? Request::get('status') : '' , 'type' => 'PHOTO']) }}"
+                                    class="nav-link"><b>PHOTO</b> <br>({{ $print_orders->where("type", "=", "PHOTO")->count() }})</a>
                             </li>
                         </ul>
                     </div>
@@ -92,20 +98,19 @@
                     <div class="col-md-3 col-xs-6 ">
                         <ul class="nav nav-pills nav-justified nav-card-header-pills">
                             <li class=" nav-item
-                                {{ Request::path() == 'admin/order-atk'
-                                    && Request::get('status') == null ? 'active' : '' }} active" >
-                                <a href="{{ route('users.index') }}"
-                                    class="nav-link"><b>SUBMIT</b> <br>(10)</a>
+                                {{ Request::get('status') == "SUBMIT" ? 'active' : '' }}" >
+                                <a href="{{ route('order-print.index', ['status' => 'SUBMIT', 'type' => Request::get('type') ? Request::get('type') : '']) }}"
+                                    class="nav-link"><b>SUBMIT</b> <br>({{ $orders->where("status", "=", "SUBMIT")->count() }})</a>
                             </li>
                             <li class="nav-item
-                                {{ Request::get('role') == 'admin' ? 'active' : '' }}">
-                                <a href="{{ route('users.index', ['role' => 'admin']) }}"
-                                    class="nav-link"><b>PROCESS</b> <br>(5)</a>
+                                {{ Request::get('status') == 'PROCESS' ? 'active' : '' }}">
+                                <a href="{{ route('order-print.index', ['status' => 'PROCESS', 'type' => Request::get('type') ? Request::get('type') : '']) }}"
+                                    class="nav-link"><b>PROCESS</b> <br>({{ $orders->where("status", "=", "PROCESS")->count() }})</a>
                             </li>
                             <li class="nav-item
-                                {{ Request::get('role') == 'customer' ? 'active' : '' }}" >
-                                <a href="{{ route('users.index', ['role' => 'customer']) }}"
-                                    class="nav-link"><b>FINISH</b> <br>(0)</a>
+                                {{ Request::get('status') == 'FINISH' ? 'active' : '' }}" >
+                                <a href="{{ route('order-print.index', ['status' => 'FINISH', 'type' => Request::get('type') ? Request::get('type') : '']) }}"
+                                    class="nav-link"><b>FINISH</b> <br>({{ $orders->where("status", "=", "FINISH")->count() }})</a>
                             </li>
                         </ul>
                     </div>
@@ -127,6 +132,7 @@
                     </thead>
                     <tbody>
                         @foreach ($orders as $data)                            
+                        
                             <tr>
                                 <td>{{ $numberOrders++ }}</td>
                                 <td>{{ $data->user->name }} <br> 
@@ -163,11 +169,19 @@
                                         <a href="{{ route('order-print.download', $data->id ) }}" class="btn btn-primary btn-sm" >Download</a>
                                         <a href="#" class="btn btn-warning btn-sm"
                                             data-toggle="modal" data-target="#edit-status-modal" data-backdrop="static"
-                                            data-order-print-status={{ $data->status }}>Edit</a>
+                                            data-order-print-status={{ $data->status }} data-order-print-id={{ $data->id }}>Edit</a>
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach                        
+                        @endforeach
+
+                        @empty($data)
+                            <tr>
+                                <td colspan="8">
+                                    Tidak ada data
+                                </td>
+                            </tr>
+                        @endempty                        
                     </tbody>
                     <tfoot>
                         <tr>
@@ -196,10 +210,12 @@
             var timer = null;
             var button = $(event.relatedTarget)
             var status = button.data('order-print-status')
-            // var id = button.data('order-atk-id')
+            var id = button.data('order-print-id')
 
+            console.log(id);
             var modal = $(this)
-            // modal.find('.modal-body #order_atk_id').val(id)
+            modal.find('.modal-body #order_print_id').val(id)
+
 
             timer = setInterval(function() {
                 if (status == "SUBMIT") {

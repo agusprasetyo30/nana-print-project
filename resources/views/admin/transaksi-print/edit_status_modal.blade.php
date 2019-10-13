@@ -10,12 +10,14 @@
                   <div class="modal-body" style="text-align: center">
                         <div class="row" >
                               <div class="col-md-12" style="text-align: center; padding: 0px">
-                                    {{-- form --}}
-                                    <input type="hidden" name="">   
-                                    <input type="submit" name="btn-status" id="status-submit" class="btn btn-primary" value="SUBMIT">
-                                    <input type="submit" name="btn-status" id="status-process" class="btn btn-warning" value="PROCESS">
-                                    <input type="submit" name="btn-status" id="status-finish" class="btn btn-success" value="FINISH">
-                                    {{-- form --}}
+                                    <form action="{{ route('order-print.update-status', 'test') }}" method="post">
+                                          @csrf
+                                          @method('put')
+                                          <input type="hidden" name="order_print_id" id="order_print_id">
+                                          <input type="submit" name="btn-status" id="status-submit" class="btn btn-primary" value="SUBMIT">
+                                          <input type="submit" name="btn-status" id="status-process" class="btn btn-warning" value="PROCESS">
+                                          <input type="submit" name="btn-status" id="status-finish" class="btn btn-success" value="FINISH">
+                                    </form>
                               </div>
                         </div>
                   </div>

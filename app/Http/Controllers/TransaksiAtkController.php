@@ -8,7 +8,7 @@ use App\Item_order;
 class TransaksiAtkController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan data dari Transaksi ATK
      *
      * @return \Illuminate\Http\Response
      */
@@ -31,11 +31,7 @@ class TransaksiAtkController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Mengedit status transaksi ATK.
      */
     public function updateStatus(Request $request)
     {

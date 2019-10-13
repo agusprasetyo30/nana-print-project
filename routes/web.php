@@ -46,11 +46,12 @@ Route::group(['prefix' => 'admin'], function () {
 
     // Transaksi ATK
     Route::get('order-atk', 'TransaksiAtkController@index')->name('order-atk.index');
-    Route::put('order-atk/edit/{id}', 'TransaksiAtkController@updateStatus')->name('order-atk.update-status');
+    Route::put('order-atk/{id}/edit', 'TransaksiAtkController@updateStatus')->name('order-atk.update-status');
 
     // Transaksi Print
     Route::get('order-print', 'TransaksiPrintController@index')->name('order-print.index');
     Route::get('order-print/{id}/download', 'TransaksiPrintController@downloadFile')->name('order-print.download');
+    Route::put('order-print/{id}/edit', 'TransaksiPrintController@updateStatus')->name('order-print.update-status');
 
 
     // Laporan Keuangan
