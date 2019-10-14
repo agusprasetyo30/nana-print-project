@@ -18,7 +18,7 @@
          <div class="box-header">
          <hr>
          <div class="float-left text-left">
-            <form action="#" method="get">
+            <form action="{{ route('money-report.index') }}">
                <label for="bulan">Periode</label>
                <div class="form-inline mb-3">
                   <select name="bulan" id="bulan" class="form-control" required>
@@ -51,7 +51,7 @@
                         <button type="submit" class="btn btn-info btn-sm">
                            Cari
                         </button>
-                        <a href="#" class="btn btn-success btn-sm">
+                        <a href="{{ route('money-report.index') }}" class="btn btn-success btn-sm">
                            Tampilkan semua
                         </a>
                   </div>
@@ -71,36 +71,23 @@
                      </tr>
                   </thead>
                   <tbody>
-                     <tr>
-                        <td>1.</td>
-                        <td>
-                           <b>Oktober 2019</b>
-                        </td>
-                        <td>
-                           Rp. 1.000.000
-                        </td>
-                        <td>
-                           Rp. 15.000
-                        </td>
-                        <td>
-                           Rp. 15.000
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>2.</td>
-                        <td>
-                           <b>Nopember 2019</b>
-                        </td>
-                        <td>
-                           Rp. 2.000.000
-                        </td>
-                        <td>
-                           Rp. 150.000
-                        </td>
-                        <td>
-                           Rp. 200.000
-                        </td>
-                     </tr>
+                     {{-- @foreach ($print_orders as $data) --}}
+                        <tr>
+                           <td>1.</td>
+                           <td>
+                              {{-- <b>{{ $data[0]->pluck('month') }}</b> --}}
+                           </td>
+                           <td>
+                              Rp. 1.000.000
+                           </td>
+                           <td>
+                              Rp. 15.000
+                           </td>
+                           <td>
+                              Rp. 15.000
+                           </td>
+                        </tr>
+                     {{-- @endforeach --}}
                   </tbody>
                   <tfoot>
                      <tr>
