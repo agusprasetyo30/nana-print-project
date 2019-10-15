@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\DB;
 use App\Item_order;
 use App\Print_order;
 use App\Helpers\LaporanKeuangan;
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class LaporanKeuanganController extends Controller
 {
@@ -17,59 +15,28 @@ class LaporanKeuanganController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        try {
+        // try {
 
-        $data = LaporanKeuangan::getItemOrderData();
+        $month = $request->get('month') ? $request->get('month') : null;
+        $year = $request->get('year') ? $request->get('year') : null;
 
-        $total = LaporanKeuangan::getItemOrderData()->count();
+        $item_order_data = LaporanKeuangan::getItemOrderData($month, $year);
+        $totalPage = 5;
+        $number = numberPagination($totalPage);
 
-        // set current page
-        $currentPage = Paginator::resolveCurrentPage();
+        $order_item = customPagination($item_order_data, $item_order_data->count(), $totalPage);
+        
+        $print_order_data = LaporanKeuangan::getPrintOrderData($month, $year);
+        $photo_order_data = LaporanKeuangan::getPhotoOrderData($month, $year);
 
-        $perPage = 5;
 
-        // generate pagination
-        $currentResults = $data->slice(($currentPage - 1) * $perPage, $perPage)->all(); 
-
-        $results = new LengthAwarePaginator($currentResults, $total, $perPage);
-
-        dd($data, $total, $currentPage, $currentResults ,$results);
-
-        // $coba = get_object_vars(LaporanKeuangan::getTotalPrice());
-        $obj = LaporanKeuangan::getTotalPrice(); 
-        $obj1 = LaporanKeuangan::getMonth(); 
-        $obj2 = LaporanKeuangan::getYear(); 
-
-        for ($i=0; $i < count($obj); $i++) { 
-            echo convertBulan($obj1[$i]) . " " . $obj2[$i];
-        }
-        // dd($obj[0]);
-
-        // $print_orders = DB::table('print_orders')
-        //     ->select(DB::raw("sum(total_price) as total_price , type, status, MONTH(created_at) as month,
-        //             YEAR(created_at) as YEAR"))
-        //     ->groupBy('type', 'status', 'month', 'year')
-        //     ->having('status', 'FINISH')
-        //     ->having('type', 'PRINT')
-        //     ->get();
-        // ->having('month', 1)
-        // ->having('year', 2019)
-
-        // $photo_orders = DB::table('print_orders')
-        //     ->select(DB::raw("sum(total_price) as total_price , type, status, MONTH(created_at) as month,
-        //             YEAR(created_at) as YEAR"))
-        //     ->groupBy('type', 'status', 'month', 'year')
-        //     ->having('status', 'FINISH')
-        //     ->having('type', 'PHOTO')
-        //     ->get();
-
-        } catch (\Exception $e) {
+        // } catch (\Exception $e) {
             //throw $th;
-        }
+        // }
 
-        return view('admin.laporan-keuangan.index');        
+        return view('admin.laporan-keuangan.index', compact('number', 'order_item', 'print_order_data', 'photo_order_data'));        
     }
 
     /**

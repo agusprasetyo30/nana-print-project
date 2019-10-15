@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Str;
+use Illuminate\Pagination\LengthAwarePaginator as paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 // use Intervention\Image\File;
 // use Intervention\Image\Facades\Image;
 
@@ -76,5 +78,17 @@ function convertBulan($nomorBulan)
     }
 }
 
+function customPagination($dataQuery, $countDataQuery, $totalPerPage)
+{
+    // set current page
+    $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+    // generate pagination
+    $currentResults = $dataQuery->slice(($currentPage - 1) * $totalPerPage, $totalPerPage)->all(); 
+
+    $results = new LengthAwarePaginator($currentResults, $countDataQuery, $totalPerPage);
+
+    return $results;
+}
 
 ?>
