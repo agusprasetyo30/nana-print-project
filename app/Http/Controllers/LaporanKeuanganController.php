@@ -13,6 +13,7 @@ class LaporanKeuanganController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * TODO: Menampilkan data
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Item;
 use App\Category;
 use App\Paper;
@@ -20,10 +21,10 @@ class ItemController extends Controller
         
         if ($keyword != '') {
             $data['item'] = Item::with('categories')
-            ->where("name", "LIKE", "%$keyword%")
-            ->paginate(5);
+                ->where("name", "LIKE", "%$keyword%")
+                ->paginate(5);
         } else {
-            $data['item'] = Item::with('categories')->get();
+            $data['item'] = Item::with('categories')->paginate(5);
         }
         
         $data['category'] = Category::all();

@@ -85,6 +85,7 @@
                 </div>
 
                 <div class="links ">
+                    <a href="{{route('customer.dashboard')}}">Customer</a>
                     <a href="{{route('admin.dashboard')}}">Admin</a>
                 </div>
             </div>

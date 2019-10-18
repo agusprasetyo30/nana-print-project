@@ -146,7 +146,7 @@
                         <tr>
                             <td colspan="10">
                                 {{-- Pagination --}}
-                                {{-- {{$users->appends(Request::all())->links()}} --}}
+                                {{$data['item']->appends(Request::all())->links()}}
                             </td>
                         </tr>
                     </tfoot>

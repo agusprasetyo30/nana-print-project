@@ -20,7 +20,7 @@
          <div class="float-left text-left">
             <form action="{{ route('money-report.index') }}">
                <label for="month">Periode</label>
-               <div class="form-inline mb-3">
+               <div class="form-inline mb-3 contain">
                   <select name="month" id="month" class="form-control" required>
                         <option value="">Pilih bulan</option>
                         <option value="1" {{ Request::get('month') == 1 ? 'selected' : '' }}>Januari</option>

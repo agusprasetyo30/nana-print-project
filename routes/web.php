@@ -11,13 +11,22 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('/registration', 'CustomerController@registration')->name('registration');
+// Route::get('/login', 'Auth\CustomerController@login');
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'c'], function () {
+    Route::get('/', 'CustomerController@dashboard')->name('customer.dashboard');
+    Route::get('/product', 'CustomerController@product')->name('customer.product');
+});
+
 
 Route::group(['prefix' => 'admin'], function () {
 
@@ -56,7 +65,6 @@ Route::group(['prefix' => 'admin'], function () {
 
     // Laporan Keuangan
     Route::get('money-report', 'LaporanKeuanganController@index')->name('money-report.index');
-
 });
 
 
