@@ -50,20 +50,24 @@
                               
                               <option value="" disabled selected>Pilih Kertas</option>
                               @foreach ($papersPrint as $paper)
-                                 <option value="{{ $paper->price }}">{{ $paper->name }}&nbsp;---&nbsp;<b>{{ toRupiah($paper->price) }}</b></option>
+                                 <option value="{{ $paper->price }}" data-value="{{ $paper->id }}">{{ $paper->name }}&nbsp;---&nbsp;<b>{{ toRupiah($paper->price) }}</b></option>
                               @endforeach
                            </select>
-                           <input type="text" name="coba1" id="coba1"
-                              value="{{ empty('coba') ? 'a' : 'b' }}">
+                           <input type="hidden" name="harga_kertas1" id="harga_kertas1"
+                              value="{{ empty('harga_kertas1') ? 'a' : 'b' }}">
+                           
+                           <input type="hidden" name="ambil_id[]" id="ambil_id1"
+                              value="zero">
                         </div>
                         <div class="form-group">
-                           <label for="jumlah total" for="jumlah total" style="color: white; font-size: 20px">Jumlah</label>
-                           <input type="number" name="jumlah_total[]" placeholder="Jumlah Total..." value=0
-                              class="form-control" />
+                           <label for="jumlah" for="jumlah" style="color: white; font-size: 20px">Jumlah</label>
+                           <input type="number" name="jumlah[]" placeholder="Jumlah..." value=0 onFocus="mulaihitung();" onBlur="stophitung();"
+                              class="form-control" id="jumlah1" min="1"/>
                         </div>
                         <div class="form-group">
-                           <label for="jumlah" for="jumlah" style="color: white; font-size: 20px">Jumlah Total</label>
-                           <input type="jumlah" name="jumlah[]" placeholder="Jumlah" class="form-control" value=0 readonly/>
+                           <label for="jumlah_total" style="color: white; font-size: 20px">Jumlah Total</label>
+                           <input type="text" name="jumlah_total[]" placeholder="Jumlah Total" class="form-control" value=0 readonly
+                              id="jumlah_total1"/>
                         </div>
                      </div>
                   </div>
@@ -81,7 +85,8 @@
 
 @push('js')
 <script>
-      var nomer_id;
+      var data_id = 1;
+      var harga_kertas;
       var nomer = 1
 
       
@@ -107,20 +112,24 @@
                   onchange="reply_click(this.id)">
                   <option value="" disabled selected>Pilih Kertas</option>
                   @foreach ($papersPrint as $paper)
-                     <option value="{{ $paper->price }}" >{{ $paper->name }}&nbsp;---&nbsp;<b>{{ toRupiah($paper->price) }}</b></option>
+                     <option value="{{ $paper->price }}" data-value="{{ $paper->id }}">{{ $paper->name }}&nbsp;---&nbsp;<b>{{ toRupiah($paper->price) }}</b></option>
                   @endforeach
                </select>
-               <input type="text" name="coba" id="coba`+nomer+`"
+               <input type="hidden" name="harga_kertas" id="harga_kertas`+nomer+`"
                   value="{{ empty('coba') ? 'a' : 'b' }}">
+
+               <input type="hidden" name="ambil_id[]" id="ambil_id`+nomer+`"
+                  value="zero">
             </div>
             <div class="form-group">
-               <label for="jumlah total" for="jumlah total" style="color: white; font-size: 20px">Jumlah</label>
-               <input type="number" name="jumlah_total[]" placeholder="Jumlah Total..." value=0
-                  class="form-control" />
+               <label for="jumlah" for="jumlah" style="color: white; font-size: 20px">Jumlah</label>
+               <input type="number" name="jumlah[]" placeholder="Jumlah..." value=0 onFocus="mulaihitung();" onBlur="stophitung();"
+                  class="form-control" min=1 id="jumlah`+nomer+`"/>
             </div>
             <div class="form-group">
-               <label for="jumlah" for="jumlah" style="color: white; font-size: 20px">Jumlah Total</label>
-               <input type="jumlah" name="jumlah[]" placeholder="Jumlah" class="form-control" value=0 readonly/>
+               <label for="jumlah_total" style="color: white; font-size: 20px">Jumlah Total</label>
+               <input type="text" name="jumlah_total[]" placeholder="Jumlah Total" class="form-control" value=0 readonly
+                  id="jumlah_total`+nomer+`"/>
             </div>
             `;
 
@@ -136,9 +145,13 @@
                var strUser = e.options[e.selectedIndex].value;
                console.log(strUser);
 
-               document.getElementById('coba'+data_id).value = strUser;
+               document.getElementById('harga_kertas'+data_id).value = strUser;
 
-               console.log("Uwaw tambah" + nomer);
+               hitung()
+               harga_kertas = document.getElementById('harga_kertas'+data_id).value;
+
+               var ambil_id = $('#tampung #input-data'+data_id+' .form-group select option[value="' + $(this).val() + '"]').data('value');
+               document.getElementById('ambil_id'+data_id).value = ambil_id;
             });
 
             
@@ -152,19 +165,36 @@
                var e = document.getElementById('kertas'+data_id);
                var strUser = e.options[e.selectedIndex].value;
 
-               document.getElementById('coba'+data_id).value = strUser;
+               document.getElementById('harga_kertas'+data_id).value = strUser;
+
+               hitung()
+               harga_kertas = document.getElementById('harga_kertas1').value
+
+               var ambil_id = $('#tampung #input-data1 .form-group select option[value="' + $(this).val() + '"]').data('value');
+               document.getElementById('ambil_id'+data_id).value = ambil_id;
 
             });
 
          });
-      
-      var ambil_id_coba = document.getElementsByName("coba1")[0].id
-      var ambil_nomer_id = ambil_id_coba.charAt(ambil_id_coba.length - 1)
-      console.log(ambil_nomer_id);
 
    function reply_click(select_id)
    {
       data_id =  select_id.charAt(select_id.length - 1);
+   }
+
+   function mulaihitung() {
+      interval = setInterval("hitung()", 1);
+   }
+
+   function hitung() {
+      jumlah = document.getElementById('jumlah'+data_id).value;
+      hitung_data = jumlah * harga_kertas
+
+      document.getElementById('jumlah_total'+data_id).value = hitung_data;
+   }
+
+   function stophitung() {
+      clearInterval(interval);
    }
    </script>
    

@@ -33,7 +33,7 @@ class CustomerController extends Controller
     {
         // dd($request->file('file'));
         
-        dd($request);
+        dd($request->get('kertas') ,$request->get('ambil_id'), $request->get('jumlah') ,array_sum($request->get('jumlah_total')));
     }
 
 
