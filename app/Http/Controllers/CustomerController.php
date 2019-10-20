@@ -5,27 +5,55 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Item;
 use App\Category;
+use App\Paper;
 
 class CustomerController extends Controller
 {
+    // Menampilkan form registrasi
     public function registration()
     {
         return view('auth.registration');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function dashboard()
+    // Menampilkan form transaksi foto
+    public function orderTransactionPhotoForm()
+    {
+        return view('customer.transaksi-photo.index');
+    }
+
+    // Menampilkan form transaksi foto
+    public function orderTransactionPrintForm()
+    {
+        $papersPrint = Paper::where("type", "=", "PRINT")->get();
+
+        return view('customer.transaksi-print.index', compact('papersPrint'));
+    }
+
+    public function orderTransactionPrintProcess(Request $request)
+    {
+        // dd($request->file('file'));
+        
+        dd($request);
+    }
+
+
+    // Menampilkan form kontak kami
+    public function contactUs()
+    {
+        return view('customer.kontak-kami.index');
+    }
+
+    // Dashboard customer
+    public function dashboardCustomer()
     {
         $items = Item::where("status", "=", "SHOW")->get();
 
         return view('customer.dashboard.index', compact('items'));
     }
 
-    public function product()
+
+    // Menampilkan produk yang dijual
+    public function productData()
     {
         $categories = Category::with('items')->get();
 
@@ -36,69 +64,4 @@ class CustomerController extends Controller
         return view('customer.product.index', compact('categories', 'items', 'itemsCount'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

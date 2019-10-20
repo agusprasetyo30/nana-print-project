@@ -18,13 +18,18 @@ Route::get('/', function () {
 
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::get('/registration', 'CustomerController@registration')->name('registration');
+Route::get('/contact-us', 'CustomerController@contactUs')->name('contact-us');
+
 // Route::get('/login', 'Auth\CustomerController@login');
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'c'], function () {
-    Route::get('/', 'CustomerController@dashboard')->name('customer.dashboard');
-    Route::get('/product', 'CustomerController@product')->name('customer.product');
+    Route::get('/', 'CustomerController@dashboardCustomer')->name('customer.dashboard');
+    Route::get('/product', 'CustomerController@productData')->name('customer.product');
+    Route::get('/order-photo', 'CustomerController@orderTransactionPhotoForm')->name('customer.order-photo');
+    Route::get('/order-print', 'CustomerController@orderTransactionPrintForm')->name('customer.order-print');
+    Route::post('/order-print', 'CustomerController@orderTransactionPrintProcess');
 });
 
 

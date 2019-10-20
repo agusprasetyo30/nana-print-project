@@ -101,9 +101,8 @@
 															</div>
 													</div>
 													<button type="submit" class="header_search_button trans_300"
-																value="Submit"><img
-																src="{{ asset('assets/customer/images/search.png') }}"
-																alt=""></button>
+														value="Submit">
+													<img src="{{ asset('assets/customer/images/search.png') }}" alt=""></button>
 												</form>
 											</div>
 									</div>
@@ -171,11 +170,11 @@
 													<a href="#" class="margin_a_nav_menu"
 														style="margin-left : 25px; margin-right: 25px">Print Online<i class="fas fa-chevron-down"></i></a>
 													<ul>
-															<li><a href="#">Print Data <i class="fas fa-chevron-down"></i></a></li>
-															<li><a href="#">Print Foto<i class="fas fa-chevron-down"></i></a></li>
+															<li><a href="{{ route('customer.order-print') }}">Print Data <i class="fas fa-chevron-down"></i></a></li>
+															<li><a href="{{ route('customer.order-photo') }}">Print Foto<i class="fas fa-chevron-down"></i></a></li>
 													</ul>
 												</li>
-												<li><a href="contact.html" class="margin_a_nav_menu"
+												<li><a href="{{ route('contact-us') }}" class="margin_a_nav_menu"
 													style="margin-left : 25px; margin-right: 25px">Kontak Pemilik<i class="fas fa-chevron-down"></i></a></li>
 											</ul>
 									</div>
