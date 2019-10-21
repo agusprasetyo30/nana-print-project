@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 use App\Item;
 use App\Category;
 use App\Paper;
@@ -31,9 +34,16 @@ class CustomerController extends Controller
 
     public function orderTransactionPrintProcess(Request $request)
     {
-        // dd($request->file('file'));
+        $location = 'print-orders';
+
+        $file = $request->file('file');
+        $name = 'Uwaw' . \Carbon\Carbon::now()->format('Y-m-dH:i:s') . '.' . $file->getClientOriginalExtension();
+
+        $file->storeAs('public/'. $location , $name);
         
-        dd($request->get('kertas') ,$request->get('ambil_id'), $request->get('jumlah') ,array_sum($request->get('jumlah_total')));
+        return dd($location .'/'. $name);
+
+        // dd($request->get('kertas') ,$request->get('ambil_id'), $request->get('jumlah'), $request->get('jumlah_total') ,array_sum($request->get('jumlah_total')));
     }
 
 
@@ -46,6 +56,9 @@ class CustomerController extends Controller
     // Dashboard customer
     public function dashboardCustomer()
     {
+        // $data = Auth::user();
+        // dd($data->getRoleNames());
+
         $items = Item::where("status", "=", "SHOW")->get();
 
         return view('customer.dashboard.index', compact('items'));

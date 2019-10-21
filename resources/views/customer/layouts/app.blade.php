@@ -49,12 +49,19 @@
 								</div>
 								<div class="top_bar_content ml-auto">
 									<div class="top_bar_user">
-											<div class="user_icon"><img src="{{ asset('assets/customer/images/user.svg') }}"
-														alt=""></div>
+											
 											@if (Route::has('login'))
 												@auth
-													<div><a href="#">Logout</a></div>
+													<div>
+														<form action="{{ route('logout') }}" method="post" id="my_form">
+															@csrf
+															<a style="cursor: pointer" href="javascript:$('#my_form').submit();">Logout</a>
+															| {{ Auth::user()->name }}
+														</form>
+													</div>
 												@else
+												<div class="user_icon"><img src="{{ asset('assets/customer/images/user.svg') }}"
+													alt=""></div>
 													<div><a href="{{ route('registration') }}">Registrasi</a></div>
 													<div><a href="{{ route('login') }}">Masuk</a></div>
 												@endauth
@@ -109,8 +116,9 @@
 								</div>
 							</div>
 
-							@if (!Route::has('login'))
+							@if (Route::has('login'))
 								<!-- Wishlist -->
+								@auth
 								<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
 									<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
 										<!-- Cart -->
@@ -128,6 +136,7 @@
 										</div>
 									</div>
 								</div>
+								@endauth
 							@endif
 					</div>
 				</div>
