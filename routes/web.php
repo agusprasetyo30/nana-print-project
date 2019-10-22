@@ -34,6 +34,8 @@ Route::group(['prefix' => 'c'], function () {
     Route::get('/order-photo', 'CustomerController@orderTransactionPhotoForm')->name('customer.order-photo');
     Route::get('/order-print', 'CustomerController@orderTransactionPrintForm')->name('customer.order-print');
     Route::post('/order-print', 'CustomerController@orderTransactionPrintProcess');
+
+    // Route::get('/cart', 'CustomerController@orderTransactionPhotoForm')->name('customer.order-photo');
 });
 
 

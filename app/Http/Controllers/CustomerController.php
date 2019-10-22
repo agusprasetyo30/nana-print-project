@@ -6,25 +6,35 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+use App\Print_order;
 use App\Item;
 use App\Category;
 use App\Paper;
 
 class CustomerController extends Controller
 {
-    // Menampilkan form registrasi
+    /**
+     * Menampilkan form registrasi
+     *
+     */
     public function registration()
     {
         return view('auth.registration');
     }
 
-    // Menampilkan form transaksi foto
+    /**
+     * Menampilkan form transaksi foto
+     *
+     */
     public function orderTransactionPhotoForm()
     {
         return view('customer.transaksi-photo.index');
     }
 
-    // Menampilkan form transaksi foto
+    /**
+     * Menampilkan form transaksi foto
+     *
+     */
     public function orderTransactionPrintForm()
     {
         $papersPrint = Paper::where("type", "=", "PRINT")->get();
@@ -32,32 +42,67 @@ class CustomerController extends Controller
         return view('customer.transaksi-print.index', compact('papersPrint'));
     }
 
+    /**
+     * Proses penyimpanan data transaksi print customer
+     *
+     */
     public function orderTransactionPrintProcess(Request $request)
     {
-        $location = 'print-orders';
+        $idUser = Auth::user()->id;
+        $namaUser = Auth::user()->name;
 
-        $file = $request->file('file');
-        $name = 'Uwaw' . \Carbon\Carbon::now()->format('Y-m-dH:i:s') . '.' . $file->getClientOriginalExtension();
+        $id_kertas = $request->get('ambil_id');
+        $jml_beli = $request->get('jumlah');
+        $jml_total_beli = $request->get('jumlah_total');
+        $total_keseluruhan = array_sum($request->get('jumlah_total'));
+        $deskripsi = $request->get('description'); 
 
-        $file->storeAs('public/'. $location , $name);
+        $fileRequest = $request->file('file');
         
-        return dd($location .'/'. $name);
+        $print_order = new Print_order;
+        
+        $pivot = [];
 
-        // dd($request->get('kertas') ,$request->get('ambil_id'), $request->get('jumlah'), $request->get('jumlah_total') ,array_sum($request->get('jumlah_total')));
+        for ($i=0; $i < count($id_kertas); $i++) {
+            array_push($pivot, ['quantity' => $jml_beli[$i], 'total_quantity_price' => $jml_total_beli[$i]]);
+        }
+        $sync = array_combine($id_kertas, $pivot);
+
+        $print_order->user_id = $idUser;
+        $print_order->total_price = $total_keseluruhan;
+        $print_order->file = saveFileTransaksi($fileRequest, $namaUser, 'print-orders');
+        $print_order->description = $deskripsi;
+        $print_order->type = "PRINT";
+        $print_order->status = "SUBMIT";
+
+        $print_order->save();
+
+        // Mengisi data relasi
+        $print_order->paper()->sync($sync);
+
+        // return redirect()
+            // ->route('item.index')
+            // ->with('status', 'Item successfully add');
     }
 
 
-    // Menampilkan form kontak kami
+    /**
+     * Menampilkan form kontak kami
+     *
+     */
     public function contactUs()
     {
         return view('customer.kontak-kami.index');
     }
 
-    // Dashboard customer
+    /**
+     * Menampilkan Dashboard customer
+     *
+     */
     public function dashboardCustomer()
     {
         // $data = Auth::user();
-        // dd($data->getRoleNames());
+        // dd($data->name);
 
         $items = Item::where("status", "=", "SHOW")->get();
 
@@ -65,7 +110,10 @@ class CustomerController extends Controller
     }
 
 
-    // Menampilkan produk yang dijual
+    /**
+     * Menampilkan produk yang dijual
+     *
+     */
     public function productData()
     {
         $categories = Category::with('items')->get();

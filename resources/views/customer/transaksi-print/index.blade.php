@@ -26,8 +26,8 @@
                         <input type="file" name="file" class="form-control" />
                      </div>
                      <div class="form-group">
-                        <label for="alamat" style="color: white; font-size: 18px">Deskripsi</label>
-                        <textarea name="alamat" id="alamat" cols="30" rows="3" name="alamat"
+                        <label for="description" style="color: white; font-size: 18px">Deskripsi</label>
+                        <textarea name="description" id="description" cols="30" rows="3" name="alamat"
                            placeholder="Deskripsi..." class="form-control"></textarea>
                      </div>
                      <input type="submit" name="submit" value="Simpan" class="btn btn-success btn-block"

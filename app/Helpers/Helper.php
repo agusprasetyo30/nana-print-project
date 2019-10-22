@@ -8,28 +8,28 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 function savePhoto($file, $width, $height, $name, $location)
 {
-        $images = str_slug($name) . time() . '.' . $file->getClientOriginalExtension();
-        $path = storage_path('app/public/' . $location); // otomatis masuk ke folder storage
+    $images = str_slug($name) . time() . '.' . $file->getClientOriginalExtension();
+    $path = storage_path('app/public/' . $location); // otomatis masuk ke folder storage
 
-        if (!File::isDirectory($path))
-        {
-            File::makeDirectory($path, 0777, true, true);
-        }
-        Image::make($file)->resize($width, $height)->save($path . '/' . $images);
-        return $location . '/' . $images;
+    if (!File::isDirectory($path))
+    {
+        File::makeDirectory($path, 0777, true, true);
+    }
+    Image::make($file)->resize($width, $height)->save($path . '/' . $images);
+    return $location . '/' . $images;
 }
 
 function saveOriginalPhoto($file, $name, $location)
 {
-        $images = Str::slug($name) . time() . '.' . $file->getClientOriginalExtension();
-        $path = storage_path('app/public/' . $location); // otomatis masuk ke folder storage
+    $images = Str::slug($name) . time() . '.' . $file->getClientOriginalExtension();
+    $path = storage_path('app/public/' . $location); // otomatis masuk ke folder storage
 
-        if (!File::isDirectory($path))
-        {
-            File::makeDirectory($path, 0777, true, true);
-        }
-        Image::make($file)->save($path . '/' . $images);
-        return $location . '/' . $images;
+    if (!File::isDirectory($path))
+    {
+        File::makeDirectory($path, 0777, true, true);
+    }
+    Image::make($file)->save($path . '/' . $images);
+    return $location . '/' . $images;
 }
 
 function numberPagination($pagination)
@@ -89,6 +89,22 @@ function customPagination($dataQuery, $countDataQuery, $totalPerPage)
     $results = new LengthAwarePaginator($currentResults, $countDataQuery, $totalPerPage);
 
     return $results;
+}
+
+function saveFileTransaksi($file, $fileName, $location)
+{
+    $path = 'public/' . $location; // otomatis masuk ke folder storage
+
+    if (!File::isDirectory($path))
+    {
+        File::makeDirectory($path, 0777, true, true);
+    }
+
+    $name = $fileName . \Carbon\Carbon::now()->format('Y-m-dH:i') . '.' . $file->getClientOriginalExtension();
+
+    $file->storeAs($path , $name);
+
+    return $location .'/'. $name;
 }
 
 ?>
