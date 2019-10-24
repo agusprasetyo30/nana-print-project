@@ -18,6 +18,7 @@
             background: darkslategray;
             color: white;
             cursor: pointer;
+            border-radius: 3px;
         }
 
         .stock:hover {

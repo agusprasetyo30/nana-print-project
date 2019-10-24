@@ -26,7 +26,7 @@
                         <div class="form-group">
                             <label for="nama" style="color: white; font-size: 20px">Email</label>
                             <input type="Email" name="email" id="email" placeholder="Masukan E-mail"
-                                        class="form-control" />
+                                class="form-control" autofocus=on/>
                         </div>
                         <div class="form-group">
                             <label for="password" for="alamat" style="color: white; font-size: 20px">Password:</label>

@@ -71,7 +71,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 {{-- //TODO : Profil pada sidebar --}}
 
-                                <img src="http://syafrudinmtop.net/wp-content/uploads/2016/09/Tips-Memilih-Tripod-Yang-Bagus-Untuk-Kamera-DSLR-dan-Mirrorless.jpg" class="user-image"
+                                <img src="{{ asset('storage/' . \Auth::user()->avatar) }}" class="user-image"
                                     alt="User Image">
                                 <span class="hidden-xs">Profil</span>
                             </a>
@@ -80,12 +80,12 @@
                                 {{-- //TODO: Menampilkan foto dan tanggal daftar --}}
 
                                 <li class="user-header">
-                                    <img src="http://syafrudinmtop.net/wp-content/uploads/2016/09/Tips-Memilih-Tripod-Yang-Bagus-Untuk-Kamera-DSLR-dan-Mirrorless.jpg" class="img-circle"
+                                    <img src="{{ asset('storage/' . \Auth::user()->avatar) }}" class="img-circle"
                                         alt="User Image">
 
                                     <p>
-                                        Nama - @yield('admin-role')
-                                        <small>Member since {{ date('F Y', strtotime('2019-09-08 15:10:29')) }}</small>
+                                        {{ \Auth::user()->name }} - @yield('admin-role')
+                                        <small>Member since {{ date('F Y', strtotime(\Auth::user()->created_at)) }}</small>
                                     </p>
                                 </li>
                                 <li class="user-footer">
@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="pull-right">
                                         {{--  --}}
-                                        <form action="" method="post">
+                                        <form action="{{ route('logout') }}" method="post">
                                             @csrf
                                             <input type="submit" class="btn btn-default btn-flat" value="Logout">
                                         </form>
@@ -122,11 +122,11 @@
                 <div class="user-panel">
                     {{-- //TODO: Menampilkan nama user dan foto dalam keadaan  --}}
                     <div class="pull-left image">
-                        <img src="http://syafrudinmtop.net/wp-content/uploads/2016/09/Tips-Memilih-Tripod-Yang-Bagus-Untuk-Kamera-DSLR-dan-Mirrorless.jpg"
+                        <img src="{{ asset('storage/' . \Auth::user()->avatar) }}"
                             class="img-circle" style="width: 50px; height: 45px" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Nama User</p>
+                        <p>{{ \Auth::user()->name }}</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>

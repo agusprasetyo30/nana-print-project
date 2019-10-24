@@ -38,7 +38,7 @@ class LoginController extends Controller
                 break;
 
             case 'customer':
-                return '/c';
+                return '/';
                 break;
             // default:
             //     # code...

@@ -14,7 +14,7 @@ class AddAndEditItemOrders extends Migration
     public function up()
     {
         Schema::table('item_orders', function (Blueprint $table) {
-            $table->enum('sending_status', ['KIRIM', 'AMBIL'])->after('total_price');
+            $table->enum('sending_status', ['KIRIM', 'AMBIL'])->after('total_price')->default("AMBIL");
             
             $table->foreign('user_id')
                 ->references('id')

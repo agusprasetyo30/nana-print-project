@@ -7,6 +7,19 @@
    <link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/responsive.css') }}">
 @endsection
 
+@push('css')
+   <style>
+      .welcome {
+         color: black;
+         margin: 20px 0px;
+         background: lightblue;
+         padding: 20px;
+         font-size: 20px;
+         border-radius: 5px;
+      }
+   </style>
+@endpush
+
 @section('content')
 <!-- Banner -->
 
@@ -16,85 +29,30 @@
    <div class="container fill_height">
          <div class="row fill_height">
             <div class="banner_product_image"><img src="{{ asset('assets/customer/images/fc.png') }}" alt="">
+               
             </div>
             <div class="col-lg-5 offset-lg-4 fill_height">
                <div class="banner_content">
-                     <h1 class="banner_text">siap melayani anda</h1>
-                     <div class="banner_product_name">Print & ATK</div>
-                     <div class="button banner_button"><a href="#">Join</a></div>
+                     <h1 class="banner_text">NANA Print & ATK</h1>
+                     <div class="banner_product_name">Siap melayani anda</div>
+                     @auth
+                        <p class="welcome shadow-sm">Selamat Datang {{ \Auth::user()->name }}</p>
+                     @else
+                        <div class="button banner_button"><a href="{{ route('registration') }}">Join</a></div>
+                     @endauth
                </div>
             </div>
          </div>
    </div>
 </div>
 
-<!-- Characteristics -->
-
-<div class="characteristics">
-   <div class="container">
-         <div class="row">
-
-            <!-- Char. Item -->
-            <div class="col-lg-3 col-md-6 char_col">
-
-               <div class="char_item d-flex flex-row align-items-center justify-content-start">
-                     <div class="char_icon"><img src="{{ asset('assets/customer/images/char_1.png') }}" alt="">
-                     </div>
-                     <div class="char_content">
-                        <div class="char_title">Free Delivery</div>
-                        <div class="char_subtitle">from $50</div>
-                     </div>
-               </div>
-            </div>
-
-            <!-- Char. Item -->
-            <div class="col-lg-3 col-md-6 char_col">
-
-               <div class="char_item d-flex flex-row align-items-center justify-content-start">
-                     <div class="char_icon"><img src="{{ asset('assets/customer/images/char_2.png') }}" alt="">
-                     </div>
-                     <div class="char_content">
-                        <div class="char_title">Free Delivery</div>
-                        <div class="char_subtitle">from $50</div>
-                     </div>
-               </div>
-            </div>
-
-            <!-- Char. Item -->
-            <div class="col-lg-3 col-md-6 char_col">
-
-               <div class="char_item d-flex flex-row align-items-center justify-content-start">
-                     <div class="char_icon"><img src="{{ asset('assets/customer/images/char_3.png') }}" alt="">
-                     </div>
-                     <div class="char_content">
-                        <div class="char_title">Free Delivery</div>
-                        <div class="char_subtitle">from $50</div>
-                     </div>
-               </div>
-            </div>
-
-            <!-- Char. Item -->
-            <div class="col-lg-3 col-md-6 char_col">
-
-               <div class="char_item d-flex flex-row align-items-center justify-content-start">
-                     <div class="char_icon"><img src="{{ asset('assets/customer/images/char_4.png') }}" alt="">
-                     </div>
-                     <div class="char_content">
-                        <div class="char_title">Free Delivery</div>
-                        <div class="char_subtitle">from $50</div>
-                     </div>
-               </div>
-            </div>
-         </div>
-   </div>
-</div>
-<div class="new_arrivals">
+<div class="new_arrivals"  style="background: white">
       <div class="container">
-            <div class="row">
-               <div class="col">
+            <div class="row" >
+               <div class="col" >
                   <div class="tabbed_container">
                         <div class="tabs clearfix tabs-right">
-                           <div class="new_arrivals_title">Hot New Arrivals</div>
+                           <div class="new_arrivals_title">Daftar ATK</div>
                            <ul class="clearfix">
                               <li class="active">Featured</li>
                            </ul>
@@ -111,10 +69,8 @@
                                        <!-- Slider Item -->
                                        <div class="arrivals_slider_item">
                                           <div class="border_active"></div>
-                                          <div
-                                                class="product_item is_new d-flex flex-column align-items-center justify-content-center text-center">
-                                                <div
-                                                   class="product_image d-flex flex-column align-items-center justify-content-center">
+                                          <div class="product_item is_new d-flex flex-column align-items-center justify-content-center text-center">
+                                                <div class="product_image d-flex flex-column align-items-center justify-content-center">
                                                    <img src="{{ asset('storage/' . $item->cover) }}"
                                                          alt="{{ $item->name }}" width="160px" height="160px"></div>
                                                    
@@ -124,9 +80,7 @@
                                                       <div><a href="product.html">{{ $item->name }}</a></div>
                                                    </div>
                                                    <div class="product_extras">
-                                                      
-                                                      <button class="product_cart_button active">Add to
-                                                            Cart</button>
+                                                      <button class="product_cart_button active" onclick="location.href='{{ route('show-product', $item->id) }}'">View Details</button>
                                                    </div>
                                                 </div>
                                           </div>

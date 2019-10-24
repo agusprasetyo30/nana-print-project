@@ -17,7 +17,7 @@ class CreateItemOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
             $table->float('total_price')->unsigned()->default(0);
-            $table->enum('status', ['CART', 'SUBMIT', 'PROCESS', 'FINISH']);            
+            $table->enum('status', ['CART', 'SUBMIT', 'PROCESS', 'FINISH'])->default("CART");            
 
             $table->timestamps();
 

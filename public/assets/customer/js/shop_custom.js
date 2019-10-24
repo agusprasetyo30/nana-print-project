@@ -32,7 +32,7 @@ $(document).ready(function()
 
 	setHeader();
 
-	initCustomDropdown();
+	// initCustomDropdown();
 	initPageMenu();
 	initViewedSlider();
 	initBrandsSlider();

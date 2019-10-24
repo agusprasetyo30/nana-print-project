@@ -30,15 +30,6 @@
 @endpush
 
 @section('content')
-<!-- Home -->
-<div class="home">
-   <div class="home_background parallax-window" data-parallax="scroll" data-image-src="{{ asset('assets/customer/images/shop_background.jpg') }}"></div>
-   <div class="home_overlay"></div>
-   <div class="home_content d-flex flex-column align-items-center justify-content-center">
-      <h2 class="home_title">ATK</h2>
-   </div>
-</div>
-
 	<!-- Shop -->
 
 	<div class="shop">
@@ -51,8 +42,9 @@
 						<div class="sidebar_section">
 							<div class="sidebar_title">Categories</div>
 							<ul class="sidebar_categories">
+								<li><a href="{{ route('product') }}">All Categories</a></li>
 								@foreach ($categories as $category)
-									<li><a href="#">{{ $category->name }} ({{ $category->items->count() }})</a></li>
+									<li><a href="{{ route('product', ['category' => $category->name]) }}">{{ $category->name }} ({{ $category->items->count() }})</a></li>
 								@endforeach
 							</ul>
 						</div>
@@ -66,7 +58,7 @@
 
 					<div class="shop_content">
 						<div class="shop_bar clearfix">
-							<div class="shop_product_count"><span>{{ $itemsCount }}</span> products found</div>
+							<div class="shop_product_count"><a href="{{ route('product') }}"><span>{{ $itemsCount }}</span></a> products found</div>
 							<div class="shop_sorting">
 								<span>Sort by:</span>
 								<ul>
@@ -89,7 +81,7 @@
 								<!-- Product Item -->
 								<div class="product_item product_if_hover">
 									<div class="product_border"></div>
-										<a href="#" tabindex="{{ $key }}" class="product_a">
+										<a href="{{ route('show-product', $item->id) }}" tabindex="{{ $key }}" class="product_a">
 										<div class="product_image d-flex flex-column align-items-center justify-content-center"><img src="{{ asset('storage/' . $item->cover) }}" width="120px" alt=""></div>
 										<div class="product_content">
 											<div class="product_price">{{ toRupiah($item->price) }}</div>
@@ -98,6 +90,9 @@
 									</a>
 								</div>
 							@endforeach
+							@empty($item)
+								<div class="mt-4">Barang yang anda cari tidak tersedia</div>
+							@endempty
                      
 						</div>
 

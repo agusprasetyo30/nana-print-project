@@ -14,11 +14,14 @@
             <div class="col-lg-6 p-3 bg-primary">
                 <div class="cart_container">
                     <div class="cart_title text-center" style="color: white; font-weight: bold">Form Register</div>
-                    <div class="m-3" <form action="contact.php" method="POST">
+                    <div class="m-3"> 
+                        <form action="{{ route('registration') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
                         <div class="form-group">
                             <label for="nama" style="color: white; font-size: 20px">Nama</label>
                             <input type="text" name="nama" id="nama" placeholder="Nama lengkap..."
-                                        class="form-control" />
+                                class="form-control" autofocus=on/>
                         </div>
                         <div class="form-group">
                             <label for="username" style="color: white; font-size: 20px">Username</label>
@@ -27,11 +30,11 @@
                         <div class="form-group">
                             <label for="alamat" style="color: white; font-size: 20px">Alamat</label>
                             <textarea name="alamat" id="alamat" cols="30" rows="3" name="alamat"
-                                            placeholder="Alamat Lengkap..." class="form-control"></textarea>
+                                placeholder="Alamat Lengkap..." class="form-control"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="no-telepon" for="alamat" style="color: white; font-size: 20px">No Telepon</label>
-                            <input type="text" name="no-telepon" placeholder="No-Telepon..." class="form-control" />
+                            <input type="text" name="no-telepon" placeholder="Nomer Telepon..." class="form-control" />
                         </div>
                         <div class="form-group">
                             <label for="cover" for="alamat" style="color: white; font-size: 20px">Avatar</label>
@@ -46,13 +49,12 @@
                             <input type="password" name="password" placeholder="Password..." class="form-control" />
                         </div>
                         <div class="form-group">
-                            <label for="password" for="alamat" style="color: white; font-size: 20px">Confirm
-                                Password</label>
-                            <input type="password" name="password" placeholder="Password..." class="form-control" />
+                            <label for="password" for="alamat" style="color: white; font-size: 20px">Confirm Password</label>
+                            <input type="password" name="password_confirmation" placeholder="Konfirmasi Password..." class="form-control" />
                         </div>
 
                         <input type="submit" name="submit" value="Daftar" class="btn btn-success btn-block"
-                                    style="padding-left: 50px; padding-right: 50px" />
+                            style="padding-left: 50px; padding-right: 50px; cursor: pointer" />
                         </form>
                     </div>
                 </div>

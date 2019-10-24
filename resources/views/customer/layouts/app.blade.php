@@ -20,6 +20,25 @@
 	@yield('css-tambahan')
 
 	@stack('css')
+	<style>
+		body {
+			background: #f5f5f5;
+		}
+
+		li.menu {
+			height: 100%;
+		}
+
+		li.menu:hover {
+			transition: 0.3s all;
+			background: #0e8ce4;
+			height: 100%;
+		}
+
+		li.menu:hover>a {
+			color: white;
+		}
+	</style>
 	{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/product_styles.css') }}"> --}}
 	{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/product_responsive.css') }}">
 	--}}
@@ -56,12 +75,13 @@
 														<form action="{{ route('logout') }}" method="post" id="my_form">
 															@csrf
 															<a style="cursor: pointer" href="javascript:$('#my_form').submit();">Logout</a>
-															| {{ Auth::user()->name }}
+															| <a href="#" title="Klik untuk merubah profil">{{ Auth::user()->name }}</a>
 														</form>
 													</div>
 												@else
-												<div class="user_icon"><img src="{{ asset('assets/customer/images/user.svg') }}"
-													alt=""></div>
+													<div class="user_icon"><img src="{{ asset('assets/customer/images/user.svg') }}"
+														alt=""></div>
+													
 													<div><a href="{{ route('registration') }}">Registrasi</a></div>
 													<div><a href="{{ route('login') }}">Masuk</a></div>
 												@endauth
@@ -85,28 +105,18 @@
 									<div class="logo"><a href="{{ route('customer.dashboard') }}" style="font-size: 30px">Nana Print</a></div>
 								</div>
 							</div>
-							<?php $category = \App\Category::all(); ?>
+							<?php $categories = \App\Category::all(); ?> 
 							
 							<!-- Search -->
 							<div class="col-lg-6 col-12 order-lg-2 order-3 text-lg-left text-right">
 								<div class="header_search">
 									<div class="header_search_content">
 											<div class="header_search_form_container">
-												<form action="#" class="header_search_form clearfix">
+												<form action="{{ route('product') }}" class="header_search_form clearfix">
+
 													<input type="search" required="required" class="header_search_input"
-																placeholder="Search for products...">
-													<div class="custom_dropdown">
-															<div class="custom_dropdown_list">
-																<span class="custom_dropdown_placeholder clc">All Categories</span>
-																<i class="fas fa-chevron-down"></i>
-																<ul class="custom_list clc">
-																	<li><a class="clc" href="#">All Categories</a></li>
-																	@foreach ($category as $item)
-																		<li><a class="clc" href="#">{{ $item->name }}</a></li>
-																	@endforeach
-																</ul>
-															</div>
-													</div>
+																placeholder="Search for products..." name="keyword"  style="width: 100%; padding: 0px 26px;">
+
 													<button type="submit" class="header_search_button trans_300"
 														value="Submit">
 													<img src="{{ asset('assets/customer/images/search.png') }}" alt=""></button>
@@ -115,24 +125,36 @@
 									</div>
 								</div>
 							</div>
-
 							@if (Route::has('login'))
 								<!-- Wishlist -->
-								@auth
+							@auth
+							@php
+								$data = [];
+								$data_orders = \App\Item_order::with('item')
+										->where("user_id", "=", \Auth::user()->id)
+										->where("status", "=", "CART")
+										->get();
+
+								if (\Auth::user()) {
+									if (!empty($data_orders[0])) {
+										$data = $data_orders[0];
+									}
+								}
+							@endphp	
 								<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
 									<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
 										<!-- Cart -->
 										<div class="cart">
-												<div class="cart_container d-flex flex-row align-items-center justify-content-end">
-													<div class="cart_icon">
-														<img src="{{ asset('assets/customer/images/cart.png') }}" alt="">
-														<div class="cart_count"><span>10</span></div>
-													</div>
-													<div class="cart_content">
-														<div class="cart_text"><a href="#">Keranjang</a></div>
-														<div class="cart_price">Rp. 4000</div>
-													</div>
+											<div class="cart_container d-flex flex-row align-items-center justify-content-end">
+												<div class="cart_icon">
+													<img src="{{ asset('assets/customer/images/cart.png') }}" alt="">
+													<div class="cart_count"><span>{{ empty($data) ? 0 : count($data->item) }}</span></div>
 												</div>
+												<div class="cart_content">
+													<div class="cart_text"><a href="{{ route('customer.show-cart') }}">Keranjang</a></div>
+													<div class="cart_price">{{ empty($data) ? "Rp. 0" : toRupiah($data->total_price) }}</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -144,6 +166,14 @@
 
 			<!-- Main Navigation -->
 
+			<div class="container-fluid">
+				@if (session()->has('status'))
+					<div class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{{ session('status') }}
+					</div>
+				@endif
+			</div>
 			<nav class="main_nav">
 				<div class="container">
 					<div class="row">
@@ -152,7 +182,6 @@
 								<div class="main_nav_content d-flex flex-row">
 
 									<!-- Categories Menu -->
-
 									<div class="cat_menu_container">
 											<div
 												class="cat_menu_title d-flex flex-row align-items-center justify-content-start">
@@ -161,8 +190,9 @@
 											</div>
 
 											<ul class="cat_menu">
-												@foreach ($category as $item)
-													<li><a href="#">{{ $item->name }} <i class="fas fa-chevron-right ml-auto"></i></a></li>
+												<li><a href="{{ route('product') }}">All Categories <i class="fas fa-chevron-right ml-auto"></i></a></li>
+												@foreach ($categories as $category)
+													<li><a href="{{ route('product', ['category' => $category->name]) }}">{{ $category->name }} <i class="fas fa-chevron-right ml-auto"></i></a></li>
 												@endforeach												
 										</ul>
 									</div>
@@ -171,20 +201,31 @@
 
 									<div class="main_nav_menu" >
 											<ul class="standard_dropdown main_nav_dropdown">
-												<li><a href="{{ route('customer.dashboard') }}" class="margin_a_nav_menu"
-													style="margin-left : 25px; margin-right: 25px">Beranda<i class="fas fa-chevron-down"></i></a></li>
-												<li><a href="{{ route('customer.product') }}" class="margin_a_nav_menu"
-													style="margin-left : 25px; margin-right: 25px">Produk ATK<i class="fas fa-chevron-down"></i></a></li>
+												<li class="menu"><a href="{{ route('customer.dashboard') }}" class="margin_a_nav_menu"
+													style="margin-left : 15px; margin-right: 15px">Beranda<i class="fas fa-chevron-down"></i></a></li>
+												<li class="menu"><a href="{{ route('product') }}" class="margin_a_nav_menu"
+													style="margin-left : 15px; margin-right: 15px">Produk ATK<i class="fas fa-chevron-down"></i></a></li>
 												<li class="hassubs">
 													<a href="#" class="margin_a_nav_menu"
-														style="margin-left : 25px; margin-right: 25px">Print Online<i class="fas fa-chevron-down"></i></a>
+														style="margin-left : 15px; margin-right: 15px">Print Online<i class="fas fa-chevron-down"></i></a>
 													<ul>
-															<li><a href="{{ route('customer.order-print') }}">Print Data <i class="fas fa-chevron-down"></i></a></li>
-															<li><a href="{{ route('customer.order-photo') }}">Print Foto<i class="fas fa-chevron-down"></i></a></li>
+															<li class="menu"><a href="{{ route('customer.order-print') }}">Print Data <i class="fas fa-chevron-down"></i></a></li>
+															<li class="menu"><a href="{{ route('customer.order-photo') }}">Print Foto<i class="fas fa-chevron-down"></i></a></li>
 													</ul>
 												</li>
-												<li><a href="{{ route('contact-us') }}" class="margin_a_nav_menu"
-													style="margin-left : 25px; margin-right: 25px">Kontak Pemilik<i class="fas fa-chevron-down"></i></a></li>
+												@auth
+												<li class="hassubs">
+													<a href="#" class="margin_a_nav_menu"
+														style="margin-left : 15px; margin-right: 15px">History<i class="fas fa-chevron-down"></i></a>
+													<ul>
+														<li class="menu"><a href="#">Transaksi ATK<i class="fas fa-chevron-down"></i></a></li>
+														<li class="menu"><a href="{{ route('customer.history-print', \Auth::user()->id) }}">Transaksi Print & Foto <i class="fas fa-chevron-down"></i></a></li>
+													</ul>
+												</li>
+												@endauth
+												
+												<li class="menu"><a href="{{ route('contact-us') }}" class="margin_a_nav_menu"
+													style="margin-left : 15px; margin-right: 15px">Kontak Pemilik<i class="fas fa-chevron-down"></i></a></li>
 											</ul>
 									</div>
 

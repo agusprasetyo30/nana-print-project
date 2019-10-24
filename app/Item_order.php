@@ -31,4 +31,15 @@ class Item_order extends Model
 
         return $total_quantity;
     }
+
+    // menghitung price
+    public function getTotalPriceAttribute()
+    {
+        $total_price = 0;
+        foreach ($this->item as $data) {
+            $total_price = $total_price + ($data->price * $data->pivot->quantity);
+        }
+
+        return $total_price;
+    }
 }

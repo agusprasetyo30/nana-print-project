@@ -11,39 +11,40 @@
 <!-- Transaksi Foto -->
 
 <div class="cart_section">
-   <div class="container">
+   <div class="container"  style="background: white; padding: 20px">
       <div class="row justify-content-center">
          <div class="cart_container">
-            <div class="cart_title text-center bg-primary p-3" style="color: white; font-weight: bold">Transaksi Print</div>
+            <div class="cart_title p-3" style="color: black; font-weight: bold">Transaksi Print Data</div>
          </div>
-         <div class="col-lg-12 p-3 ">
+         <div class="col-lg-12 p-3 " >
             <form action="{{ route('customer.order-print') }}" method="post" enctype="multipart/form-data">
                @csrf
                <div class="row justify-content-center">
-                  <div class="col-md-6 bg-danger p-4">
+                  <div class="col-md-6  p-4" style="background: #f5f5f5"> {{--Kasih BG--}}
                      <div class="form-group">
-                        <label for="cover" for="alamat" style="color: white; font-size: 18px">File</label>
-                        <input type="file" name="file" class="form-control" />
+                        <label for="cover" for="alamat" style="color: black; font-size: 15px">File</label>
+                        <input type="file" name="file" class="form-control" placeholder="Upload data" />
+                        <small>File required : .zip, .rar, .pdf</small>
                      </div>
                      <div class="form-group">
-                        <label for="description" style="color: white; font-size: 18px">Deskripsi</label>
+                        <label for="description" style="color: black; font-size: 15px">Deskripsi</label>
                         <textarea name="description" id="description" cols="30" rows="3" name="alamat"
-                           placeholder="Deskripsi..." class="form-control"></textarea>
+                           placeholder="Deskripsi data file..." class="form-control"></textarea>
                      </div>
                      <input type="submit" name="submit" value="Simpan" class="btn btn-success btn-block"
-                              style="padding-left: 50px; padding-right: 50px" />
+                              style="padding-left: 50px; padding-right: 50px; cursor: pointer" {{ \Auth::user() ? '' : 'disabled' }}/>
                   </div>
-                  <div class="col-md-4 bg-primary" id="tampung">
+                  <div class="col-md-4 " id="tampung"> {{--Kasih BG--}}
                      <div class="row">
                         <div class="col-md-12">
                            <a style="color: white; cursor: pointer" id="btn-add-input-data" 
                               class="btn btn-success mt-1 float-right">Tambah</a>
                         </div>
                      </div>
-                     <div class="p-2 m-3 bg-danger abc" id="input-data1">
+                     <div class="p-2 m-3 bg-danger" id="input-data1">
                         <div class="form-group">
                            <label for="jenis kertas" for="jenis kertas" style="color: white; font-size: 20px">Jenis Kertas</label>
-                           <label style="color: white; float: right" id="nomer"></label>
+                           <label style="color: white; float: right" id="nomer">1</label>
 
                            <select name="kertas[]" id="kertas1" class="form-control" style="margin-left: 0px;" dir="auto"
                               onchange="reply_click(this.id)">
@@ -80,7 +81,7 @@
 @endsection
 
 @section('js-tambahan')
-   <script src="{{ asset('assets/customer/js/cart_custom.js') }}"></script>     
+   {{-- <script src="{{ asset('assets/customer/js/cart_custom.js') }}"></script>      --}}
 @endsection
 
 @push('js')
@@ -100,7 +101,7 @@
             
             const div = document.createElement('div');
 
-            div.className = `p-2 m-3 bg-danger abc` ;
+            div.className = `p-2 m-3 bg-danger` ;
 
             div.innerHTML = 
             `

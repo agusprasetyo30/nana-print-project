@@ -128,11 +128,11 @@
                                                 data-my-status="{{ $user->status }}" data-my-role="{{ $user->getRoleNames()[0] }}"
                                                 data-user-id="{{ $user->id }}"  
                                                 data-toggle="modal" data-target="#edit-modal" data-backdrop="static" class="btn btn-warning">
-                                                <span class="fa fa-chain"></span> Edit</a>
+                                                EDIT</a>
                                             {{-- Tombol Hapus --}}
                                             <button type="submit" class="btn btn-danger"
                                                 onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')">
-                                                <span class="fa fa-trash"> Hapus</span>
+                                                HAPUS
                                             </button>
                                         </div>
                                     </form>

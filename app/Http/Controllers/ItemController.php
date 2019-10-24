@@ -47,7 +47,7 @@ class ItemController extends Controller
         $item->price = $request->get('price');
         $item->stock = $request->get('stock');
         $item->status = $request->get('status');
-        $item->created_by = 1;
+        $item->created_by = \Auth::user()->id;
 
         $cover = $request->file('cover');
 
@@ -87,6 +87,7 @@ class ItemController extends Controller
         $item->description = $description;
         $item->price = $price;
         $item->status = $status;
+        $item->updated_by = \Auth::user()->id;
         
         if ($cover) {
             if($item->cover && file_exists(storage_path('app/public/' . $item->cover))) {

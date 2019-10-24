@@ -12,30 +12,38 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+    // return view('welcome');
+// });
 
 // Auth::routes();
 
+Route::get('/', 'CustomerController@dashboardCustomer')->name('customer.dashboard');
 
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('/login', 'Auth\LoginController@login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/registration', 'CustomerController@registration')->name('registration');
+Route::post('/registration', 'CustomerController@saveRegistration');
 Route::get('/contact-us', 'CustomerController@contactUs')->name('contact-us');
+Route::get('/product', 'CustomerController@productData')->name('product');
+Route::get('/{id}/product', 'CustomerController@showProductData')->name('show-product');
 
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'c'], function () {
-    Route::get('/', 'CustomerController@dashboardCustomer')->name('customer.dashboard');
-    Route::get('/product', 'CustomerController@productData')->name('customer.product');
+    // Transaksi photo
     Route::get('/order-photo', 'CustomerController@orderTransactionPhotoForm')->name('customer.order-photo');
+    Route::post('/order-photo', 'CustomerController@orderTransactionPhotoProcess');
+    // Transaksi Print
     Route::get('/order-print', 'CustomerController@orderTransactionPrintForm')->name('customer.order-print');
     Route::post('/order-print', 'CustomerController@orderTransactionPrintProcess');
 
-    // Route::get('/cart', 'CustomerController@orderTransactionPhotoForm')->name('customer.order-photo');
+    Route::get('/{id}/history-print', 'CustomerController@historyPrint')->name('customer.history-print');
+
+    Route::post('/cart', 'CustomerController@cart')->name('customer.cart');
+    Route::get('/show-cart', 'CustomerController@showCart')->name('customer.show-cart');
 });
 
 
