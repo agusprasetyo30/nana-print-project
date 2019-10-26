@@ -13,6 +13,7 @@ use App\Item;
 use App\Category;
 use App\Paper;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
@@ -34,7 +35,7 @@ class CustomerController extends Controller
         $data->name = $request->get('nama');
         $data->username = $request->get('username');
         $data->email = $request->get('email');
-        $data->password = $request->get('password');
+        $data->password = Hash::make($request->get('password'));
         $data->address = $request->get('alamat');
         $data->phone = $request->get('no-telepon');
         $data->status = "ACTIVE";
@@ -183,7 +184,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Menampilkan form history transaksi
+     * Menampilkan form/data history transaksi
      *
      */
     public function historyPrint($id)
@@ -195,6 +196,15 @@ class CustomerController extends Controller
             ->get();
 
         return view('customer.history.index_print', compact('print_orders'));
+    }
+
+    /**
+     * Menampilkan form/data history transaksi ATK
+     * 
+     */
+    public function historyAtk($id)
+    {
+        return view('customer.history.index_atk');        
     }
 
     /**
@@ -357,5 +367,29 @@ class CustomerController extends Controller
             ->where("status", "=", "CART")->get();
 
         return view('customer.cart.checkout', compact('data_cart'));
+    }
+
+    /**
+     * Membuat transaksi ATK
+     * 
+     */
+    
+    public function makeTransaction(Request $request)
+    {
+        $id = $request->get('id_order');
+        $total_price = $request->get('total_price');
+        $sending_status = $request->get('sending_status');
+
+        $data_cart = Item_order::findOrFail($id);
+
+        $data_cart->total_price = $total_price;
+        $data_cart->sending_status = $sending_status;
+        $data_cart->status = "SUBMIT";
+
+        $data_cart->save();
+
+        return redirect()
+            ->route('customer.history-atk', \Auth::user()->id)
+            ->with('status', 'Berhasil membuat pesanan');
     }
 }

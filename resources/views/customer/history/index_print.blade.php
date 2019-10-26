@@ -1,6 +1,6 @@
 @extends('customer.layouts.app')
 
-@section('page-title', 'History')
+@section('page-title', 'History Transaksi Print')
 
 @section('css-tambahan')
    <link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/cart_styles.css') }}">
@@ -84,6 +84,13 @@
                         </li>
                      </ul>
                   @endforeach
+                  @empty($data)
+                     <ul class="cart_list">
+                        <li class="cart_item clearfix text-center">
+                           Transaksi print & ATK Kosong
+                        </li>
+                     </ul>
+                  @endempty
                </div>
             </div>
          </div>

@@ -18,21 +18,21 @@
 
 // Auth::routes();
 
-Route::get('/', 'CustomerController@dashboardCustomer')->name('customer.dashboard');
-
-Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('/login', 'Auth\LoginController@login');
-Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
-Route::get('/registration', 'CustomerController@registration')->name('registration');
-Route::post('/registration', 'CustomerController@saveRegistration');
-Route::get('/contact-us', 'CustomerController@contactUs')->name('contact-us');
-Route::get('/product', 'CustomerController@productData')->name('product');
-Route::get('/{id}/product', 'CustomerController@showProductData')->name('show-product');
+    Route::get('/', 'CustomerController@dashboardCustomer')->name('customer.dashboard');
+    
+    Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+    Route::post('/login', 'Auth\LoginController@login');
+    Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+    Route::get('/registration', 'CustomerController@registration')->name('registration');
+    Route::post('/registration', 'CustomerController@saveRegistration');
+    Route::get('/contact-us', 'CustomerController@contactUs')->name('contact-us');
+    Route::get('/product', 'CustomerController@productData')->name('product');
+    Route::get('/{id}/product', 'CustomerController@showProductData')->name('show-product');
 
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'c'], function () {
+Route::group(['middleware' => ['auth' ,'role:customer'] ,'prefix' => 'c'], function () {
     // Transaksi photo
     Route::get('/order-photo', 'CustomerController@orderTransactionPhotoForm')->name('customer.order-photo');
     Route::post('/order-photo', 'CustomerController@orderTransactionPhotoProcess');
@@ -41,15 +41,19 @@ Route::group(['prefix' => 'c'], function () {
     Route::post('/order-print', 'CustomerController@orderTransactionPrintProcess');
 
     Route::get('/{id}/history-print', 'CustomerController@historyPrint')->name('customer.history-print');
+    Route::get('/{id}/history-atk', 'CustomerController@historyAtk')->name('customer.history-atk');
 
     Route::post('/cart', 'CustomerController@cart')->name('customer.cart');
+    
     Route::get('/show-cart', 'CustomerController@showCart')->name('customer.show-cart');
     Route::get('/{id}/checkout', 'CustomerController@showCheckout')->name('customer.checkout');
+    Route::post('/{id}/checkout', 'CustomerController@makeTransaction');
+    
     Route::get('/{id}/delete-cart', 'CustomerController@deleteCart')->name('customer.delete-cart');
 });
 
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['middleware' => ['auth' ,'role:admin'] ,'prefix' => 'admin'], function () {
 
     // nantinya ini menjadi home ketika login
     Route::get('/', 'DashboardController@index')->name('admin.dashboard');

@@ -128,36 +128,38 @@
 							@if (Route::has('login'))
 								<!-- Wishlist -->
 							@auth
-							@php
-								$data = [];
-								$data_orders = \App\Item_order::with('item')
-										->where("user_id", "=", \Auth::user()->id)
-										->where("status", "=", "CART")
-										->get();
+								@role('customer')
+								@php
+									$data = [];
+									$data_orders = \App\Item_order::with('item')
+											->where("user_id", "=", \Auth::user()->id)
+											->where("status", "=", "CART")
+											->get();
 
-								if (\Auth::user()) {
-									if (!empty($data_orders[0])) {
-										$data = $data_orders[0];
+									if (\Auth::user()) {
+										if (!empty($data_orders[0])) {
+											$data = $data_orders[0];
+										}
 									}
-								}
-							@endphp	
-								<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
-									<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
-										<!-- Cart -->
-										<div class="cart">
-											<div class="cart_container d-flex flex-row align-items-center justify-content-end">
-												<div class="cart_icon">
-													<img src="{{ asset('assets/customer/images/cart.png') }}" alt="">
-													<div class="cart_count"><span>{{ empty($data) ? 0 : count($data->item) }}</span></div>
-												</div>
-												<div class="cart_content">
-													<div class="cart_text"><a href="{{ route('customer.show-cart') }}">Keranjang</a></div>
-													<div class="cart_price">{{ empty($data) ? "Rp. 0" : toRupiah($data->total_price) }}</div>
+								@endphp	
+									<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
+										<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
+											<!-- Cart -->
+											<div class="cart">
+												<div class="cart_container d-flex flex-row align-items-center justify-content-end">
+													<div class="cart_icon">
+														<img src="{{ asset('assets/customer/images/cart.png') }}" alt="">
+														<div class="cart_count"><span>{{ empty($data) ? 0 : count($data->item) }}</span></div>
+													</div>
+													<div class="cart_content">
+														<div class="cart_text"><a href="{{ route('customer.show-cart') }}">Keranjang</a></div>
+														<div class="cart_price">{{ empty($data) ? "Rp. 0" : toRupiah($data->total_price) }}</div>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+									@endrole
 								@endauth
 							@endif
 					</div>
@@ -171,6 +173,13 @@
 					<div class="alert alert-success alert-dismissible">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 							{{ session('status') }}
+					</div>
+				@endif
+				
+				@if (session()->has('no_login'))
+					<div class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{{ session('no_login') }}
 					</div>
 				@endif
 			</div>
@@ -205,27 +214,35 @@
 													style="margin-left : 15px; margin-right: 15px">Beranda<i class="fas fa-chevron-down"></i></a></li>
 												<li class="menu"><a href="{{ route('product') }}" class="margin_a_nav_menu"
 													style="margin-left : 15px; margin-right: 15px">Produk ATK<i class="fas fa-chevron-down"></i></a></li>
-												<li class="hassubs">
-													<a href="#" class="margin_a_nav_menu"
-														style="margin-left : 15px; margin-right: 15px">Print Online<i class="fas fa-chevron-down"></i></a>
-													<ul>
-															<li class="menu"><a href="{{ route('customer.order-print') }}">Print Data <i class="fas fa-chevron-down"></i></a></li>
-															<li class="menu"><a href="{{ route('customer.order-photo') }}">Print Foto<i class="fas fa-chevron-down"></i></a></li>
-													</ul>
-												</li>
-												@auth
-												<li class="hassubs">
-													<a href="#" class="margin_a_nav_menu"
-														style="margin-left : 15px; margin-right: 15px">History<i class="fas fa-chevron-down"></i></a>
-													<ul>
-														<li class="menu"><a href="#">Transaksi ATK<i class="fas fa-chevron-down"></i></a></li>
-														<li class="menu"><a href="{{ route('customer.history-print', \Auth::user()->id) }}">Transaksi Print & Foto <i class="fas fa-chevron-down"></i></a></li>
-													</ul>
-												</li>
-												@endauth
+
+												@role('customer')
+													<li class="hassubs">
+														<a href="#" class="margin_a_nav_menu"
+															style="margin-left : 15px; margin-right: 15px">Print Online<i class="fas fa-chevron-down"></i></a>
+														<ul>
+																<li class="menu"><a href="{{ route('customer.order-print') }}">Print Data <i class="fas fa-chevron-down"></i></a></li>
+																<li class="menu"><a href="{{ route('customer.order-photo') }}">Print Foto<i class="fas fa-chevron-down"></i></a></li>
+														</ul>
+													</li>
+													{{-- @auth --}}
+													<li class="hassubs">
+														<a href="#" class="margin_a_nav_menu"
+															style="margin-left : 15px; margin-right: 15px">History<i class="fas fa-chevron-down"></i></a>
+														<ul>
+															<li class="menu"><a href="{{ route('customer.history-atk', \Auth::user()->id) }}">Transaksi ATK<i class="fas fa-chevron-down"></i></a></li>
+															<li class="menu"><a href="{{ route('customer.history-print', \Auth::user()->id) }}">Transaksi Print & Foto <i class="fas fa-chevron-down"></i></a></li>
+														</ul>
+													</li>
+													{{-- @endauth --}}
+												@endrole
 												
 												<li class="menu"><a href="{{ route('contact-us') }}" class="margin_a_nav_menu"
 													style="margin-left : 15px; margin-right: 15px">Kontak Pemilik<i class="fas fa-chevron-down"></i></a></li>
+												
+													@role('admin')
+														<li class="menu"><a href="{{ route('admin.dashboard') }}" class="margin_a_nav_menu"
+															style="margin-left : 15px; margin-right: 15px">Dashboard Admin<i class="fas fa-chevron-down"></i></a></li>
+													@endrole
 											</ul>
 									</div>
 

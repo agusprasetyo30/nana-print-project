@@ -124,18 +124,23 @@
                   <div class="judul_template">
                      Jenis Pengiriman
                   </div>
-                  <label for="jenis"></label>
-                  <select name="sending_status" id="jenis" class="form-control" style="color: black">
-                     <option value="" selected disabled>Pilih Jenis Pengiriman</option>
-                     <option value="AMBIL">AMBIL</option>
-                     <option value="KIRIM">KIRIM</option>
-                  </select>
-                  <div class="row">
-                     <div class="col-md-12 pt-2 pb-2" style="text-align: right">
-                        <div>Total Pembayaran : <span class="total_price"> {{ toRupiah($data_cart[0]->total_price) }} </span></div>
-                        <input type="submit" class="btn btn-primary mt-2 mb-2 buat_pesanan" value="Buat Pesanan">
+                  <form action="{{ route('customer.checkout', $data_cart[0]->id) }}" method="post">
+                     @csrf
+                     <label for="jenis"></label>
+                     <select name="sending_status" id="jenis" class="form-control" style="color: black" required>
+                        <option value="" selected disabled>Pilih Jenis Pengiriman</option>
+                        <option value="AMBIL">AMBIL</option>
+                        <option value="KIRIM">KIRIM</option>
+                     </select>
+                     <div class="row">
+                        <div class="col-md-12 pt-2 pb-2" style="text-align: right">
+                           <div>Total Pembayaran : <span class="total_price"> {{ toRupiah($data_cart[0]->total_price) }} </span></div>
+                           <input type="submit" class="btn btn-primary mt-2 mb-2 buat_pesanan" value="Buat Pesanan">
+                        </div>
                      </div>
-                  </div>
+                     <input type="text" name="id_order" value="{{ $data_cart[0]->id }}">
+                     <input type="text" name="total_price" value="{{ $data_cart[0]->total_price }}">
+                  </form>
                </div>
             </div>
          </div>

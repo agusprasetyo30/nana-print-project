@@ -78,9 +78,13 @@
                      </div>                        
                         <div class="button_container">
                            @auth
-                              <button type="submit" class="btn btn-primary btn-lg" style="cursor: pointer">Tambahkan ke keranjang</button>
+                              <button type="submit" class="btn btn-primary btn-lg" style="cursor: pointer" {{ \Auth::user()->getRoleNames()[0] == "admin" ? 'disabled' : '' }}>
+                                 Tambahkan ke keranjang
+                              </button>
                            @else
-                              <button type="submit" class="btn btn-primary btn-lg" disabled>Tambahkan ke keranjang</button>
+                              <button type="submit" class="btn btn-primary btn-lg" disabled>
+                                 Tambahkan ke keranjang
+                              </button>
                            @endauth
 
                         </div>
