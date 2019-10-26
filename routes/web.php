@@ -44,6 +44,8 @@ Route::group(['prefix' => 'c'], function () {
 
     Route::post('/cart', 'CustomerController@cart')->name('customer.cart');
     Route::get('/show-cart', 'CustomerController@showCart')->name('customer.show-cart');
+    Route::get('/{id}/checkout', 'CustomerController@showCheckout')->name('customer.checkout');
+    Route::get('/{id}/delete-cart', 'CustomerController@deleteCart')->name('customer.delete-cart');
 });
 
 

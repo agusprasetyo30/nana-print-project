@@ -33,8 +33,8 @@
 @endpush
 
 @section('content')
-<div class="cart_section">
-   <div class="container">
+<div class="cart_section" style="padding-top: 50px; padding-bottom: 50px">
+   <div class="container" style="background: white; padding: 20px">
       <div class="row">
          <div class="col-lg-10 offset-lg-1">
             <div class="cart_container">
@@ -93,5 +93,5 @@
 @endsection
 
 @section('js-tambahan')
-   <script src="{{ asset('assets/customer/js/cart_custom.js') }}"></script>     
+   {{-- <script src="{{ asset('assets/customer/js/cart_custom.js') }}"></script>      --}}
 @endsection

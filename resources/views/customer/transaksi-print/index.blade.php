@@ -7,20 +7,34 @@
    <link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/cart_responsive.css') }}">
 @endsection
 
+@push('css')
+   <style>
+      .tambah-data-print {
+         background: #0e8ce4;
+      }
+
+      .form-control {
+         color: black;
+      }
+   </style>
+@endpush
+
 @section('content')
 <!-- Transaksi Foto -->
 
 <div class="cart_section">
    <div class="container"  style="background: white; padding: 20px">
       <div class="row justify-content-center">
-         <div class="cart_container">
-            <div class="cart_title p-3" style="color: black; font-weight: bold">Transaksi Print Data</div>
+         <div class="cart_container" style="width: 100%">
+            <div class="cart_title p-3" style="color: black; font-weight: bold; text-align: center">
+                  Transaksi Print Data
+            </div>
          </div>
          <div class="col-lg-12 p-3 " >
             <form action="{{ route('customer.order-print') }}" method="post" enctype="multipart/form-data">
                @csrf
                <div class="row justify-content-center">
-                  <div class="col-md-6  p-4" style="background: #f5f5f5"> {{--Kasih BG--}}
+                  <div class="col-md-6  p-4" style="background: #f5f5f5; border-right: 1px solid #bababa"> {{--Kasih BG--}}
                      <div class="form-group">
                         <label for="cover" for="alamat" style="color: black; font-size: 15px">File</label>
                         <input type="file" name="file" class="form-control" placeholder="Upload data" />
@@ -31,17 +45,17 @@
                         <textarea name="description" id="description" cols="30" rows="3" name="alamat"
                            placeholder="Deskripsi data file..." class="form-control"></textarea>
                      </div>
-                     <input type="submit" name="submit" value="Simpan" class="btn btn-success btn-block"
+                     <input type="submit" name="submit" value="Proses Transaksi" class="btn btn-success btn-block btn-lg"
                               style="padding-left: 50px; padding-right: 50px; cursor: pointer" {{ \Auth::user() ? '' : 'disabled' }}/>
                   </div>
-                  <div class="col-md-4 " id="tampung"> {{--Kasih BG--}}
+                  <div class="col-md-4 " id="tampung" style="background: #f5f5f5"> {{--Kasih BG--}}
                      <div class="row">
                         <div class="col-md-12">
                            <a style="color: white; cursor: pointer" id="btn-add-input-data" 
-                              class="btn btn-success mt-1 float-right">Tambah</a>
+                              class="btn btn-success mt-1 float-right">Tambah Data Print</a>
                         </div>
                      </div>
-                     <div class="p-2 m-3 bg-danger" id="input-data1">
+                     <div class="p-2 m-3 tambah-data-print" id="input-data1">
                         <div class="form-group">
                            <label for="jenis kertas" for="jenis kertas" style="color: white; font-size: 20px">Jenis Kertas</label>
                            <label style="color: white; float: right" id="nomer">1</label>
@@ -101,7 +115,7 @@
             
             const div = document.createElement('div');
 
-            div.className = `p-2 m-3 bg-danger` ;
+            div.className = `p-2 m-3 tambah-data-print` ;
 
             div.innerHTML = 
             `

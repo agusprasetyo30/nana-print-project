@@ -221,6 +221,7 @@ class CustomerController extends Controller
         $categories = Category::with('items')->get();
 
         $items = Item::where("status", "=", "SHOW")
+            ->where("stock", ">", 0)
             ->where("name", "LIKE", "%$keyword%")
             ->whereHas("categories", function ($query) use ($request) {
                 $query->where("name", "LIKE", "%{$request->get('category')}%");
@@ -308,14 +309,53 @@ class CustomerController extends Controller
      */
     public function showCart()
     {
+        // $data_cart = [];
         $data_cart = Item_order::with('item')
             ->where("user_id", "=", \Auth::user()->id)
             ->where("status", "=", "CART")
             ->get();
         
+
+        if (empty($data_cart[0]) || $data_cart[0]->item->count() == 0) {
+            $status = "KOSONG";
+        } else {
+            $status = "BERISI";
+        }
+
         // dd($data_cart[0]->item);
         // dd($data[0]->item[0]->pivot->quantity);
 
-        return view('customer.cart.index', compact('data_cart'));
+        return view('customer.cart.index', compact('data_cart', 'status'));
+    }
+
+    /**
+     * Menghapus data cart berdasarkan ID
+     *
+     */
+    public function deleteCart($id)
+    {
+        $data_order = Item_order::with('item')
+            ->where("user_id", "=", \Auth::user()->id)
+            ->where("status", "=", "CART")->get();
+
+        $data_order[0]->item()->detach($id);
+        
+        return redirect()
+            ->route('customer.show-cart')
+            ->with('status', 'Hapus keranjang berhasil');
+    }
+
+    /**
+     * Checkout data keranjang
+     * 
+     */
+
+    public function showCheckout($id)
+    {
+        $data_cart = Item_order::with('item')
+            ->where("user_id", "=", \Auth::user()->id)
+            ->where("status", "=", "CART")->get();
+
+        return view('customer.cart.checkout', compact('data_cart'));
     }
 }

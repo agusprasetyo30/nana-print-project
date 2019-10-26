@@ -7,6 +7,25 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/cart_responsive.css') }}">
 @endsection
 
+@push('css')
+    <style>
+        .login {
+            margin-top: 20px; 
+            color: white; 
+            font-size: 18px;   
+        }
+
+        .login a {
+            color: white;
+        }
+        
+        .login a:hover {
+            margin-left: 10px;
+            transition: 0.3s all;
+        }
+    </style>
+@endpush
+
 @section('content')
 <div class="cart_section">
     <div class="container">
@@ -29,13 +48,16 @@
                                 class="form-control" autofocus=on/>
                         </div>
                         <div class="form-group">
-                            <label for="password" for="alamat" style="color: white; font-size: 20px">Password:</label>
+                            <label for="password" for="alamat" style="color: white; font-size: 20px">Password</label>
                             <input type="password" name="password" placeholder="Masukan Password" class="form-control" />
                         </div>
 
                         <input type="submit" name="submit" value="Login" class="btn btn-success btn-block"
                             style="padding-left: 50px; padding-right: 50px; cursor: pointer" />
                         </form>
+                        <div class="login">
+                            Belum punya akun ? Klik <a href="{{ route('registration') }}" title="Klik untuk registrasi">Disini</a>
+                        </div>
                     </div>
                 </div>
             </div>

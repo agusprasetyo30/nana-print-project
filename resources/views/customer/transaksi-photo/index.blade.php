@@ -7,40 +7,56 @@
    <link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/cart_responsive.css') }}">
 @endsection
 
+@push('css')
+   <style>
+      .tambah-data-print {
+         background: #0e8ce4;
+      }
+
+      .form-control {
+         color: black;
+      }
+   </style>
+@endpush
+
 @section('content')
 <!-- Transaksi Foto -->
 
 <div class="cart_section">
-   <div class="container">
+   <div class="container" style="background: white; padding: 20px">
       <div class="row justify-content-center">
-         <div class="cart_container">
-            <div class="cart_title text-center bg-primary p-3" style="color: white; font-weight: bold">Transaksi Print Foto</div>
+         <div class="cart_container" style="width: 100%">
+            <div class="cart_title text-center p-3" style="color: black; font-weight: bold">
+               Transaksi Print Foto
+            </div>
          </div>
          <div class="col-lg-12 p-3 ">
             <form action="{{ route('customer.order-photo') }}" method="post" enctype="multipart/form-data">
                @csrf
                <div class="row justify-content-center">
-                  <div class="col-md-6 bg-danger p-4">
+                  <div class="col-md-6 p-4" style="background: #f5f5f5; border-right: 1px solid #bababa">
                      <div class="form-group">
-                        <label for="cover" for="alamat" style="color: white; font-size: 18px">File</label>
+                        <label for="cover" for="alamat" style="color: black; font-size: 15px">File</label>
                         <input type="file" name="file" class="form-control" />
+                        <small>File required : .zip, .rar, .pdf</small>
+
                      </div>
                      <div class="form-group">
-                        <label for="description" style="color: white; font-size: 18px">Deskripsi</label>
+                        <label for="description" style="color: black; font-size: 15px">Deskripsi</label>
                         <textarea name="description" id="description" cols="30" rows="3" name="alamat"
-                           placeholder="Deskripsi..." class="form-control"></textarea>
+                           placeholder="Deskripsi data file..." class="form-control"></textarea>
                      </div>
                      <input type="submit" name="submit" value="Simpan" class="btn btn-success btn-block"
                               style="padding-left: 50px; padding-right: 50px; cursor: pointer" {{ \Auth::user() ? '' : 'disabled' }}/>
                   </div>
-                  <div class="col-md-4 bg-primary" id="tampung">
+                  <div class="col-md-4" id="tampung" style="background: #f5f5f5">
                      <div class="row">
                         <div class="col-md-12">
                            <a style="color: white; cursor: pointer" id="btn-add-input-data" 
-                              class="btn btn-success mt-1 float-right">Tambah</a>
+                              class="btn btn-success mt-1 float-right">Tambah Data Print</a>
                         </div>
                      </div>
-                     <div class="p-2 m-3 bg-danger abc" id="input-data1">
+                     <div class="p-2 m-3 tambah-data-print" id="input-data1">
                         <div class="form-group">
                            <label for="jenis kertas" for="jenis kertas" style="color: white; font-size: 20px">Jenis Kertas</label>
                            <label style="color: white; float: right" id="nomer">1</label>
@@ -100,7 +116,7 @@
             
             const div = document.createElement('div');
 
-            div.className = `p-2 m-3 bg-danger abc` ;
+            div.className = `p-2 m-3 tambah-data-print` ;
 
             div.innerHTML = 
             `
