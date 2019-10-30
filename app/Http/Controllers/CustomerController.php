@@ -370,21 +370,33 @@ class CustomerController extends Controller
     }
 
     /**
-     * Membuat transaksi ATK
+     * Membuat transaksi ATK 
      * 
      */
     
     public function makeTransaction(Request $request)
     {
-        $id = $request->get('id_order');
+        // transaksi
+        $id_order = $request->get('id_order');
         $total_price = $request->get('total_price');
         $sending_status = $request->get('sending_status');
+        // Untuk barang
+        $id_item = $request->get('id_item');
+        $stok_asal = $request->get('stok_asal');
+        $stok_beli = $request->get('stok_beli');
+        $jml_data = count($id_item);
 
-        $data_cart = Item_order::findOrFail($id);
+        $data_cart = Item_order::findOrFail($id_order);
 
         $data_cart->total_price = $total_price;
         $data_cart->sending_status = $sending_status;
         $data_cart->status = "SUBMIT";
+        
+        for ($i=0; $i < $jml_data; $i++) {
+            $item_stok = Item::findOrFail($id_item[$i]);
+            $item_stok->stock = $stok_asal[$i] - $stok_beli[$i];
+            $item_stok->save();
+        }
 
         $data_cart->save();
 

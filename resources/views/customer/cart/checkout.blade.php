@@ -94,6 +94,8 @@
                         </div>
                   </div>
                         <div class="mt-1 mb-1">&nbsp;</div>
+                  <form action="{{ route('customer.checkout', $data_cart[0]->id) }}" method="post">
+                  @csrf
                   <div class="row">                        
                      @foreach ($data_cart[0]->item as $data)
                         <div class="col-md-6 mb-2">
@@ -109,7 +111,9 @@
                         <div class="col-md-2 text-center data_produk mb-2" >
                            <span> {{ toRupiah($data->price * $data->pivot->quantity) }} </span>
                         </div>
-                        
+                        <input type="hidden" name="id_item[]" value="{{ $data->id }}">
+                        <input type="hidden" name="stok_asal[]" value="{{ $data->stock }}">
+                        <input type="hidden" name="stok_beli[]" value="{{ $data->pivot->quantity }}">
                      @endforeach
                   </div>
                   <hr>
@@ -124,8 +128,7 @@
                   <div class="judul_template">
                      Jenis Pengiriman
                   </div>
-                  <form action="{{ route('customer.checkout', $data_cart[0]->id) }}" method="post">
-                     @csrf
+                  
                      <label for="jenis"></label>
                      <select name="sending_status" id="jenis" class="form-control" style="color: black" required>
                         <option value="" selected disabled>Pilih Jenis Pengiriman</option>
@@ -138,8 +141,8 @@
                            <input type="submit" class="btn btn-primary mt-2 mb-2 buat_pesanan" value="Buat Pesanan">
                         </div>
                      </div>
-                     <input type="text" name="id_order" value="{{ $data_cart[0]->id }}">
-                     <input type="text" name="total_price" value="{{ $data_cart[0]->total_price }}">
+                     <input type="hidden" name="id_order" value="{{ $data_cart[0]->id }}">
+                     <input type="hidden" name="total_price" value="{{ $data_cart[0]->total_price }}">
                   </form>
                </div>
             </div>
