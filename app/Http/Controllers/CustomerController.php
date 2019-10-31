@@ -204,7 +204,14 @@ class CustomerController extends Controller
      */
     public function historyAtk($id)
     {
-        return view('customer.history.index_atk');        
+        $item_orders = Item_order::with('item')
+            ->where('user_id', "=", \Auth::user()->id)
+            ->where('status', "<>", "CART")            
+            ->paginate(5)
+            ->sortByDesc('status');
+
+        // dd($item_orders[2]->item);
+        return view('customer.history.index_atk', compact('item_orders'));        
     }
 
     /**

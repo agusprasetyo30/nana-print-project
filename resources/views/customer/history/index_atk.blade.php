@@ -40,10 +40,10 @@
       .status-transaksi {
          font-size: 18px;
          padding: 5px 10px;
-         background: #0e8ce4;
          color: white;
          border-radius: 5px; 
       }
+      
    </style>
 @endpush
 
@@ -55,75 +55,99 @@
             <div class="cart_container">
                <div class="cart_title">History Transaksi Print</div>
                <div class="cart_items">
-                  {{-- @foreach ($print_orders as $data) --}}
-                     <div class="cart_list p-3">
-                        <div class="d-inline" >
-                           <div class="d-inline" style="font-size: 20px; margin-bottom: 10px; font-weight: 500; ">
-                              Detail Pesanan
+                  @foreach ($item_orders as $data)
+                  <div class="cart_list p-3 mb-3">
+                     <div class="d-inline" >
+                        <div class="d-inline" style="font-size: 20px; margin-bottom: 10px; font-weight: 500; ">
+                           Detail Pesanan
+                        </div>
+                        {{-- process = warning ; finish = success --}}
+                        @if ($data->status == "SUBMIT")
+                           <div class="d-inline float-right status-transaksi bg-primary">
+                              {{ $data->status }}
                            </div>
-                           <div class="d-inline float-right status-transaksi">
-                              SUBMIT
+
+                        @elseif($data->status == "PROCESS")
+                           <div class="d-inline float-right status-transaksi bg-warning">
+                              {{ $data->status }}
+                           </div>
+
+                        @elseif($data->status == "FINISH")
+                           <div class="d-inline float-right status-transaksi bg-success">
+                              {{ $data->status }}
+                           </div>
+                        @endif
+                     </div>
+                     <hr>
+                     <div class="row">
+                        <div class="col-md-5" style="border-right: 1px solid #d8d4d4">
+                           <div>
+                              ID Transaksi
+                           </div>
+                           <div class="blue-color">
+                              {{ $data->id }}
+                           </div>
+                           <div>
+                              Nomer Transaksi
+                           </div>
+                           <div class="blue-color">
+                              {{ date('d F Y H:i', strtotime($data->updated_at)) }} WIB
+                           </div>
+                           <div>
+                              Status Pengiriman
+                           </div>
+                           <div class="blue-color ">
+                              {{ $data->sending_status }}
                            </div>
                         </div>
-                        <hr>
-                        <div class="row">
-                           <div class="col-md-5" style="border-right: 1px solid #d8d4d4">
-                              <div>
-                                 Nomer Transaksi
+                        <div class="col-md-7">
+                           <div class="row" >
+                              <div class="col-md-7">
+                                 Daftar Produk
                               </div>
-                              <div class="blue-color">
-                                 Nomer Transaksi
+                              <div class="col-md-5 mb-2">
+                                 Harga Barang
                               </div>
-                              <div>
-                                 Nomer Transaksi
-                              </div>
-                              <div class="blue-color">
-                                 15 Oktober 2019 09:10 WIB
-                              </div>
-                              <div>
-                                 Status Pengiriman
-                              </div>
-                              <div class="blue-color">
-                                 AMBIL
-                              </div>
-                           </div>
-                           <div class="col-md-7">
-                              <div class="row" >
-                                 <div class="col-md-7">
-                                    Daftar Produk
-                                 </div>
-                                 <div class="col-md-5 mb-2">
-                                    Harga Barang
-                                 </div>
+                              @foreach ($data->item as $data_item)
                                  <div class="col-md-7">
                                     <div class="row">
-                                       <div class="col-md-4">
-                                          <img src="https://ecs7.tokopedia.net/img/cache/700/product-1/2018/11/6/41815146/41815146_ccfd5b96-b7fe-4a63-a051-c330efbab2e1_580_716.jpg" 
-                                             alt="" width="100%" height="60px">
+                                       <div class="col-md-4 col-sm-4">
+                                          <img src="{{ asset('storage/' . $data_item->cover) }}" 
+                                             alt="" width="70px" height="60px">
                                        </div>
-                                       <div class="col-md-8 p-0 mb-2" style="border-right: 1px solid #d8d4d4; ">
-                                          <div class="nama-item">Pensil 2B</div>
-                                          <small>2 Items x Rp. 10.000</small>
+                                       <div class="col-md-8 col-sm-8 p-0 mb-2" style="border-right: 1px solid #d8d4d4; ">
+                                          <div class="nama-item">{{ $data_item->name }}</div>
+                                          <small>{{ $data_item->pivot->quantity }} Items x {{ toRupiah($data_item->price) }}</small>
                                        </div>
                                     </div>
                                  </div>
                                  <div class="col-md-5 harga-item">
-                                    Rp. 20000
+                                    {{ toRupiah($data_item->price * $data_item->pivot->quantity) }}
                                  </div>
+                              @endforeach
+                           </div>
+                           
+                           <hr>
+                           <div class="row">
+                              <div class="col-md-7" style="border-right: 1px solid #d8d4d4">
+                                 Total harga ({{ $data->TotalQuantity }} items)
                               </div>
-                              
-                              <hr>
-                              <div class="row">
-                                 <div class="col-md-7" style="border-right: 1px solid #d8d4d4">
-                                    Total harga (2 items)
-                                 </div>
-                                 <div class="col-md-5 total-harga-item">
-                                    Rp. 50.000
-                                 </div>
+                              <div class="col-md-5 total-harga-item">
+                                 {{ toRupiah($data->total_price) }}
                               </div>
                            </div>
                         </div>
                      </div>
+                  </div>
+                  @endforeach
+
+                  @empty($data)
+                     <ul class="cart_list">
+                        <li class="cart_item clearfix text-center">
+                           Transaksi ATK Kosong
+                        </li>
+                     </ul>
+                  @endempty
                </div>
             </div>
          </div>
