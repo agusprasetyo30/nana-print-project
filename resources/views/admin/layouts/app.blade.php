@@ -152,6 +152,18 @@
 
             <!-- Main content -->
             <section class="content">
+                {{-- Tampilan Error --}}
+                @if ($errors->any() || session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                    <ul style="list-style-type: none">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+                
                 {{-- Content --}}
                 @yield('content')
                 {{-- Content --}}

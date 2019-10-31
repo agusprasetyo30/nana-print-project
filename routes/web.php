@@ -11,13 +11,6 @@
 |
 */
 
-
-// Route::get('/', function () {
-    // return view('welcome');
-// });
-
-// Auth::routes();
-
     Route::get('/', 'CustomerController@dashboardCustomer')->name('customer.dashboard');
     
     Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -29,8 +22,6 @@
     Route::get('/product', 'CustomerController@productData')->name('product');
     Route::get('/{id}/product', 'CustomerController@showProductData')->name('show-product');
 
-
-// Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth' ,'role:customer'] ,'prefix' => 'c'], function () {
     // Transaksi photo
@@ -58,7 +49,11 @@ Route::group(['middleware' => ['auth' ,'role:admin'] ,'prefix' => 'admin'], func
     // nantinya ini menjadi home ketika login
     Route::get('/', 'DashboardController@index')->name('admin.dashboard');
     
+    
     Route::resource('users', 'UserController', ['except' => ['show', 'edit', 'create']]);
+    
+    // Ubah Password Admin
+    Route::post('ubah-password', 'UserController@change_password')->name('ubah-password');
     
     // Kategori
     Route::post('item/category/create', 'ItemController@storeCategory')->name('category.store');

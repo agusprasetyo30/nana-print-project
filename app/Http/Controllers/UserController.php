@@ -119,6 +119,7 @@ class UserController extends Controller
             ->with('status','User succesfully updated');
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -140,4 +141,36 @@ class UserController extends Controller
             ->route('users.index')
             ->with('status', 'User successfully delete');
     }
+
+    /**
+     * merubah password pengguna
+     * 
+     */
+    public function change_password(Request $request) 
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required | string | min:5 | confirmed',
+        ]);
+    
+        $email = $request->get('email');
+        $old_password = $request->get('old_password');
+        $new_password = $request->get('password');
+        
+        if (($email == \Auth::user()->email) && Hash::check($old_password, \Auth::user()->password)) {
+            $user = User::findOrFail(\Auth::user()->id);
+
+            $user->password = Hash::make($new_password);
+            $user->save();
+
+            return redirect(route('admin.dashboard'))
+                ->with(['status' => 'Password berhasil dirubah']);
+            } else {
+            return redirect(route('admin.dashboard'))
+                ->with(['error' => 'Ubah password gagal']);
+
+            // dd("Berhasil", $request);
+        }
+    }
+    
 }

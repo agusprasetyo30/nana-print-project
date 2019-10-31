@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
+    // TODO : VALIDASI UNTUK TRANSAKSI PRINT & FOTO
+
     /**
      * Menampilkan form registrasi
      *
