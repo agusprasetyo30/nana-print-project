@@ -88,7 +88,7 @@
                               {{ $data->id }}
                            </div>
                            <div>
-                              Nomer Transaksi
+                              Tanggal Transaksi
                            </div>
                            <div class="blue-color">
                               {{ date('d F Y H:i', strtotime($data->updated_at)) }} WIB

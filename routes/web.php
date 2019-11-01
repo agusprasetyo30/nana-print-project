@@ -27,20 +27,27 @@ Route::group(['middleware' => ['auth' ,'role:customer'] ,'prefix' => 'c'], funct
     // Transaksi photo
     Route::get('/order-photo', 'CustomerController@orderTransactionPhotoForm')->name('customer.order-photo');
     Route::post('/order-photo', 'CustomerController@orderTransactionPhotoProcess');
+    
     // Transaksi Print
     Route::get('/order-print', 'CustomerController@orderTransactionPrintForm')->name('customer.order-print');
     Route::post('/order-print', 'CustomerController@orderTransactionPrintProcess');
-
+    
+    // Menampilkan history print dan ATK
     Route::get('/{id}/history-print', 'CustomerController@historyPrint')->name('customer.history-print');
     Route::get('/{id}/history-atk', 'CustomerController@historyAtk')->name('customer.history-atk');
 
+    // Tambah Keranjang
     Route::post('/cart', 'CustomerController@cart')->name('customer.cart');
     
+    //Menampilkan daftar keranjang, menampilkan checkout, menyimpan checkout
     Route::get('/show-cart', 'CustomerController@showCart')->name('customer.show-cart');
     Route::get('/{id}/checkout', 'CustomerController@showCheckout')->name('customer.checkout');
     Route::post('/{id}/checkout', 'CustomerController@makeTransaction');
     
     Route::get('/{id}/delete-cart', 'CustomerController@deleteCart')->name('customer.delete-cart');
+
+    // Profil Customer
+    Route::get('/profile', 'CustomerController@showProfil')->name('customer.profile');
 });
 
 

@@ -9,11 +9,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/bootstrap4/bootstrap.min.css') }}">
 	<link href="{{ asset('assets/customer/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css') }}" rel="stylesheet"
-			type="text/css">
+		type="text/css">
 	<link rel="stylesheet" type="text/css"
-			href="{{ asset('assets/customer/plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
+		href="{{ asset('assets/customer/plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
 	<link rel="stylesheet" type="text/css"
-			href="{{ asset('assets/customer/plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
+		href="{{ asset('assets/customer/plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/plugins/OwlCarousel2-2.2.1/animate.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/plugins/slick-1.8.0/slick.css') }}">
 
@@ -39,9 +39,7 @@
 			color: white;
 		}
 	</style>
-	{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/product_styles.css') }}"> --}}
-	{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/customer/styles/product_responsive.css') }}">
-	--}}
+	
 </head>
 
 <body>
@@ -75,7 +73,7 @@
 														<form action="{{ route('logout') }}" method="post" id="my_form">
 															@csrf
 															<a style="cursor: pointer" href="javascript:$('#my_form').submit();">Logout</a>
-															| <a href="#" title="Klik untuk merubah profil">{{ Auth::user()->name }}</a>
+															| <a href="{{ route('customer.profile') }}" title="Klik untuk merubah profil">{{ Auth::user()->name }}</a>
 														</form>
 													</div>
 												@else

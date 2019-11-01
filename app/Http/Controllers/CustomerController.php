@@ -413,4 +413,13 @@ class CustomerController extends Controller
             ->route('customer.history-atk', \Auth::user()->id)
             ->with('status', 'Berhasil membuat pesanan');
     }
+
+    /**
+     * Menampilkan Profil pengguna
+     *
+     */
+    public function showProfil()
+    {
+        return view('customer.profil.index');
+    }
 }
