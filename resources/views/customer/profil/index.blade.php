@@ -19,7 +19,7 @@
       }
 
       .data-profil h4 {
-         font-size: 24px;
+         font-size: 20px;
       }
    </style>
 @endpush
@@ -30,50 +30,46 @@
       <div class="row">
          <div class="col-lg-10 offset-lg-1">
             <div class="cart_container">
-               <div class="cart_title">Keranjang</div>
-                  <div class="cart_items">
-                     <div class="cart_list mb-1 p-3">
-                        <div class="row p-3">
-                           <div class="col-md-4">
-                              <img src="{{ asset('storage/' . Auth::user()->avatar) }}" width="100%">
+               <div class="cart_title">Profil</div>
+               <div class="cart_items" style="margin-top: 20px">
+                  <div class="cart_list mb-1 p-3">
+                     <div class="row p-3">
+                        <div class="col-md-4">
+                           <img src="{{ asset('storage/' . Auth::user()->avatar) }}" width="100%" height="100%">
+                        </div>
+                        <div class="col-md-4 ">
+                           <div class="data-profil ">
+                              <label>Nama</label>
+                              <h4>{{ Auth::user()->name }}</h4>
                            </div>
-                           <div class="col-md-4 ">
-                              <div class="data-profil ">
-                                 <label>Nama</label>
-                                 <h4>{{ Auth::user()->name }}</h4>
-                              </div>
-                              <div class="data-profil">
-                                 <label>Username</label>
-                                 <h4>{{ Auth::user()->username }}</h4>
-                              </div>
-                              <div class="data-profil">
-                                 <label>Email</label>
-                                 <h4>{{ Auth::user()->email }}</h4>
-                              </div>
-                              <div class="data-profil">
-                                 <label>Nomer Telepon</label>
-                                 <h4>{{ Auth::user()->phone }}</h4>
-                              </div>
+                           <div class="data-profil">
+                              <label>Username</label>
+                              <h4>{{ Auth::user()->username }}</h4>
                            </div>
-                           <div class="col-md-4" style="border-left: 1px solid #d8d4d4">
-                              <div class="data-profil">
-                                 <label>Alamat</label>
-                                 <h4>{{ Auth::user()->address }}</h4>
-                              </div>
-                              <div class="data-profil">
-                                 <label>Tanggal Daftar</label>
-                                 <h4>{{ date('d F Y H:i', strtotime(\Auth::user()->updated_at)) }}</h4>
-                              </div>
+                           <div class="data-profil">
+                              <label>Email</label>
+                              <h4>{{ Auth::user()->email }}</h4>
+                           </div>
+                           <div class="data-profil">
+                              <label>Nomer Telepon</label>
+                              <h4>{{ Auth::user()->phone }}</h4>
+                           </div>
+                        </div>
+                        <div class="col-md-4" style="border-left: 1px solid #d8d4d4">
+                           <div class="data-profil">
+                              <label>Alamat</label>
+                              <h4>{{ Auth::user()->address }}</h4>
+                           </div>
+                           <div class="data-profil">
+                              <label>Tanggal Daftar</label>
+                              <h4>{{ date('d F Y H:i', strtotime(\Auth::user()->updated_at)) }} WIB</h4>
                            </div>
                         </div>
                      </div>
-                     <div>
-                        <a href="#" class="btn btn-primary btn-block mt-2">Update Profile</a>
-                     </div>
                   </div>
-               {{--  --}}
-               <div class="cart_buttons">
-                  {{-- <a class="button cart_button_checkout" href="{{ route('customer.checkout', $data_cart[0]->id) }}">Checkout</a> --}}
+                  <div>
+                     <a href="{{ route('customer.edit-profile', \Auth::user()->id) }}" class="btn btn-primary btn-block mt-2">Update Profile</a>
+                  </div>
                </div>
             </div>
          </div>

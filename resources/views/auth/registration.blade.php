@@ -34,7 +34,8 @@
                         </div>
                         <div class="form-group">
                             <label for="no-telepon" for="alamat" style="color: white; font-size: 20px">No Telepon</label>
-                            <input type="text" name="no-telepon" placeholder="Nomer Telepon..." class="form-control" />
+                            <input type="text" name="no-telepon" placeholder="Nomer Telepon..." class="form-control" 
+                                onkeypress="return isNumberKey(event)" maxlength="15"/>
                         </div>
                         <div class="form-group">
                             <label for="cover" for="alamat" style="color: white; font-size: 20px">Avatar</label>
@@ -67,3 +68,19 @@
 @section('js-tambahan')
     <script src="{{ asset('assets/customer/js/cart_custom.js') }}"></script>     
 @endsection
+
+@push('js')
+    <script>
+    function isNumberKey(evt)
+    {
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+        {
+            return false;
+
+        } else {
+            return true;
+        }
+    }
+    </script>
+@endpush

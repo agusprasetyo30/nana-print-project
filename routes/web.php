@@ -47,7 +47,10 @@ Route::group(['middleware' => ['auth' ,'role:customer'] ,'prefix' => 'c'], funct
     Route::get('/{id}/delete-cart', 'CustomerController@deleteCart')->name('customer.delete-cart');
 
     // Profil Customer
-    Route::get('/profile', 'CustomerController@showProfil')->name('customer.profile');
+    Route::get('/profile', 'CustomerController@showProfil')->name('customer.show-profile');
+    Route::get('/{id}/profile', 'CustomerController@editProfil')->name('customer.edit-profile');
+    Route::put('/{id}/profile/update', 'CustomerController@updateProfil')->name('customer.update-profile');
+    Route::post('/{id}/profile/password-change', 'CustomerController@changePassword')->name('customer.change-password');
 });
 
 

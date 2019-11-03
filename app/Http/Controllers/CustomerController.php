@@ -422,4 +422,77 @@ class CustomerController extends Controller
     {
         return view('customer.profil.index');
     }
+    
+
+    /**
+     * menampilkan form edit profil 
+     *
+     */
+    public function editProfil($id)
+    {
+        $data = User::findOrFail($id);
+
+        return view('customer.profil.edit', compact('data'));
+    }
+
+    /**
+     * Mwnyimpan perubahan pada profil sesuai dengan inputan
+     *
+     */
+    public function updateProfil(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->name = $request->get('name');
+        $user->username = $request->get('username');
+        $user->phone = $request->get('phone');
+        $user->address = $request->get('address');
+        if ($request->file('avatar')) {
+            
+            if($user->avatar && file_exists(storage_path('app/public/' . $user->avatar)))
+            {
+                Storage::delete('public/' . $user->avatar);
+            }
+
+            $file = saveOriginalPhoto($request->file('avatar'), $request->get('username'), 'user-avatars');
+            $user->avatar = $file;
+        }
+
+        $user->save();
+
+        return redirect()
+            ->route('customer.show-profile')
+            ->with('status', 'Profil berhasil di update');
+    }
+
+    /**
+     * Merubah password customer
+     *
+     */
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required | string | min:8 | confirmed',
+        ]);
+
+        $email = \Auth::user()->email;
+        $old_password = $request->get('old_password');
+        $new_password = $request->get('password');
+
+        if (($email == \Auth::user()->email) && Hash::check($old_password, \Auth::user()->password)) {
+            $user = User::findOrFail(\Auth::user()->id);
+
+            $user->password = Hash::make($new_password);
+            $user->save();
+
+            return redirect(route('customer.show-profile'))
+                ->with(['status' => 'Password berhasil dirubah']);
+            } else {
+            return redirect(route('customer.show-profile'))
+                ->with(['error' => 'Ubah password gagal']);
+
+            // dd("Berhasil", $request);
+        }
+    }
 }

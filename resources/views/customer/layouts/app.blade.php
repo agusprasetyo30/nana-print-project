@@ -73,7 +73,7 @@
 														<form action="{{ route('logout') }}" method="post" id="my_form">
 															@csrf
 															<a style="cursor: pointer" href="javascript:$('#my_form').submit();">Logout</a>
-															| <a href="{{ route('customer.profile') }}" title="Klik untuk merubah profil">{{ Auth::user()->name }}</a>
+															| <a href="{{ route('customer.show-profile') }}" title="Klik untuk merubah profil">{{ Auth::user()->name }}</a>
 														</form>
 													</div>
 												@else
@@ -167,19 +167,36 @@
 			<!-- Main Navigation -->
 
 			<div class="container-fluid">
-				@if (session()->has('status'))
+				{{-- Peringatan/alert untuk menampilkan status --}}
+				@if (session('status'))
 					<div class="alert alert-success alert-dismissible">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 							{{ session('status') }}
 					</div>
 				@endif
 				
-				@if (session()->has('no_login'))
+				{{-- Peringatan/alert jika keadaan belum login --}}
+				@if (session('no_login'))
 					<div class="alert alert-danger alert-dismissible">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 							{{ session('no_login') }}
 					</div>
 				@endif
+				
+				{{-- Peringatan/alert untuk error --}}
+				@if ($errors->any() && session('error'))
+					<div class="alert alert-danger alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+
+						{{ session('error') }}
+						<ul style="list-style-type: none">
+							@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+				@endif
+
 			</div>
 			<nav class="main_nav">
 				<div class="container">
