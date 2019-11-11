@@ -27,11 +27,11 @@
 8. Setelah selesai maka hal selanjutnya yaitu menjalankan web dengan cara `php artisan serve`
 
 ## Data dummy pengguna/user
-- Admin
-Username : **admin@gmail.com**
+- Admin <br>
+Username : **admin@gmail.com**<br>
 Password : **admin**
 
 <!-- markdownlint-disable MD000 -->
-- Customer/Pelanggan
-Username : **customer@gmail.com**
+- Customer/Pelanggan<br>
+Username : **customer@gmail.com**<br>
 Password : customer
