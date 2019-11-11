@@ -13,21 +13,39 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        echo"[+] Add User process . . . \n";
+        echo"[+] Add Admin & Customer process . . . \n";
 
-        $user = new User;
+        // Admin
+        $admin = new User;
 
-        $user->name = "Customers1";
-        $user->email = "customer1@gmail.com";
-        $user->username = "customer1";
-        $user->password = Hash::make('customer1');
-        $user->address = "Ds. Palang";
-        $user->phone = "085731897771";
-        $user->status = "INACTIVE";
-        $user->avatar = "NO IMAGE";
+        $admin->name = "admin";
+        $admin->email = "admin@gmail.com";
+        $admin->username = "admin";
+        $admin->password = Hash::make('admin');
+        $admin->address = "Ds. Palang";
+        $admin->phone = "085731897771";
+        $admin->status = "INACTIVE";
+        $admin->avatar = "NO IMAGE";
 
-        $user->save();
+        $admin->save();
 
-        $user->assignRole('customer');
+        $admin->assignRole('admin');
+
+        // Customer
+        $customer = new User;
+
+        $customer->name = "Customer";
+        $customer->email = "customer@gmail.com";
+        $customer->username = "customer";
+        $customer->password = Hash::make('customer');
+        $customer->address = "Ds. Palang";
+        $customer->phone = "085731897771";
+        $customer->status = "INACTIVE";
+        $customer->avatar = "NO IMAGE";
+
+        $customer->save();
+
+        $customer->assignRole('customer');
+
     }
 }

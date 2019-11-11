@@ -53,7 +53,7 @@
       <div class="row">
          <div class="col-lg-10 offset-lg-1">
             <div class="cart_container">
-               <div class="cart_title">History Transaksi Print</div>
+               <div class="cart_title">History Transaksi ATK</div>
                <div class="cart_items">
                   @foreach ($item_orders as $data)
                   <div class="cart_list p-3 mb-3">
