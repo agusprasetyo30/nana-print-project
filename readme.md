@@ -18,10 +18,11 @@
 > hal itu digunakan untuk mengenerate key yang awalnya kosong yang berada di `.env`
 
 5. Membuat database dengan nama **nana-print** di phpMyAdmin, setelah itu mengisi username, password, dan nama databasenya yang berada di file `.env`
-6. Setelah itu melakukan migration/membuat tabel databasenya dengan cara `php artisan migrate`
+6. Membuat `storage` yang fungsinnya untuk menyimpan data-data seperti cover barang, avatar, dan dokumen print dengan cara `php artisan storage:link`
+7. Setelah itu melakukan migration/membuat tabel databasenya dengan cara `php artisan migrate`
 > dengan syarat database sudah dibuat dan sudah diinputkan di `.env`
 
-7. Setelah migration selesai maka langkah selanjutya melakukan seeder dengan cara `php artisan db:seed`
+7. Setelah migration selesai maka langkah **selanjutya** melakukan seeder dengan cara `php artisan db:seed`
 > hal ini digunakan untuk mengisi data pada tabel, dalam hal ini mengisi data user/pengguna
 
 8. Setelah selesai maka hal selanjutnya yaitu menjalankan web dengan cara `php artisan serve`
