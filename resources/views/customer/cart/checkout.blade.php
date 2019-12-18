@@ -137,7 +137,11 @@
                      </select>
                      <div class="row">
                         <div class="col-md-12 pt-2 pb-2" style="text-align: right">
+                           <div>Sub Total : <span class="total_price"> {{ toRupiah($data_cart[0]->total_price) }} </span></div>
+                           <div style="margin-right: 62px">Diskon (%) : <span class="total_price"> 10 % </span></div>
+                           <hr>
                            <div>Total Pembayaran : <span class="total_price"> {{ toRupiah($data_cart[0]->total_price) }} </span></div>
+                           coba : {{ $coba }}
                            <input type="submit" class="btn btn-primary mt-2 mb-2 buat_pesanan" value="Buat Pesanan">
                         </div>
                      </div>

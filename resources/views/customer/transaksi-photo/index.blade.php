@@ -53,7 +53,7 @@
                      <div class="row">
                         <div class="col-md-12">
                            <a style="color: white; cursor: pointer" id="btn-add-input-data" 
-                              class="btn btn-success mt-1 float-right">Tambah Data Print</a>
+                              class="btn btn-success mt-1 float-right" >Tambah Data Print</a>
                         </div>
                      </div>
                      <div class="p-2 m-3 tambah-data-print" id="input-data1">

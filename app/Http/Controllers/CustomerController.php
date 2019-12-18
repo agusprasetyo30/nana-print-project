@@ -13,6 +13,9 @@ use App\Item;
 use App\Category;
 use App\Paper;
 use App\User;
+use App\Helpers\Fuzzy;
+
+
 use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
@@ -208,9 +211,9 @@ class CustomerController extends Controller
     {
         $item_orders = Item_order::with('item')
             ->where('user_id', "=", \Auth::user()->id)
-            ->where('status', "<>", "CART")            
-            ->paginate(5)
-            ->sortByDesc('status');
+            ->where('status', "<>", "CART")->get();            
+            // ->paginate(5)
+            // ->sortByDesc('status');
 
         // dd($item_orders[2]->item);
         return view('customer.history.index_atk', compact('item_orders'));        
@@ -375,12 +378,13 @@ class CustomerController extends Controller
             ->where("user_id", "=", \Auth::user()->id)
             ->where("status", "=", "CART")->get();
 
-        return view('customer.cart.checkout', compact('data_cart'));
+        $coba = Fuzzy::agregasi_diskon_sedang(45000, 6);
+
+        return view('customer.cart.checkout', compact('data_cart', 'coba'));
     }
 
     /**
      * Membuat transaksi ATK 
-     * 
      */
     
     public function makeTransaction(Request $request)
