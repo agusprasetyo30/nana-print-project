@@ -1,5 +1,9 @@
 # Nana Print & ATK
 
+## Update
+- Menambahkan AI dengan metode Fuzzy Mamdani pada penerapan diskon customer
+- Penerapan hanya untuk diskon sedang. Untuk yang lain masih proses riset
+
 ## Library
 - Upload Photo<br>
   ``$ intervention/image``<br>
