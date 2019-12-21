@@ -91,7 +91,7 @@
                               Tanggal Transaksi
                            </div>
                            <div class="blue-color">
-                              {{ date('d F Y H:i', strtotime($data->updated_at)) }} WIB
+                              {{ date('d F Y H:i', strtotime($data->created_at)) }} WIB
                            </div>
                            <div>
                               Status Pengiriman
@@ -148,6 +148,12 @@
                         </li>
                      </ul>
                   @endempty
+               </div>
+               <div class="shop_page_nav d-flex flex-row justify-content-center">							
+                  <ul class="page_nav d-flex flex-row"> 
+                        {{-- {{ $item_orders->appends(Request::all())->links() }} --}}
+                        {{ $item_orders->links() }}
+                  </ul>
                </div>
             </div>
          </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 use App\Print_order;
 use App\Item_order;
@@ -14,8 +15,7 @@ use App\Category;
 use App\Paper;
 use App\User;
 use App\Helpers\Fuzzy;
-
-
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
@@ -208,14 +208,17 @@ class CustomerController extends Controller
      * 
      */
     public function historyAtk($id)
-    {
+    {        
         $item_orders = Item_order::with('item')
-            ->where('user_id', "=", \Auth::user()->id)
-            ->where('status', "<>", "CART")->get();            
-            // ->paginate(5)
-            // ->sortByDesc('status');
+                // ->where("user_id", \Auth::user()->id)
+                ->where("status","<>", "CART")
+                ->whereHas('item', function($query) {
+                    $query->where("user_id", \Auth::user()->id);
+                })->orderBy('id', 'desc')->paginate(5);
 
-        // dd($item_orders[2]->item);
+        // dd($item_orders);
+        // $item_orders->appends(Request::all());
+        
         return view('customer.history.index_atk', compact('item_orders'));        
     }
 
@@ -378,9 +381,15 @@ class CustomerController extends Controller
             ->where("user_id", "=", \Auth::user()->id)
             ->where("status", "=", "CART")->get();
 
-        $coba = Fuzzy::agregasi_diskon_sedang(45000, 6);
+        $totalTransaksi = $this->totalTransaksiSukses()->isEmpty() ? 0 : $this->totalTransaksiSukses()->pluck('total_price')[0] ? $this->totalTransaksiSukses()->pluck('total_price')[0] : 0;
+        $jumlahTransaksi = $this->jumlahTransaksiSukses()->isEmpty() ? 0 : $this->jumlahTransaksiSukses()->pluck('transaction_count')[0];
+        
+        $data = new Fuzzy();
+        $diskon = number_format( $data->hitung_diskon_sedang($totalTransaksi, $jumlahTransaksi) , 0);
 
-        return view('customer.cart.checkout', compact('data_cart', 'coba'));
+        $hitung_potongan = $data_cart[0]->totalPrice - ($data_cart[0]->totalPrice * ($diskon / 100));
+
+        return view('customer.cart.checkout', compact('data_cart', 'diskon', 'hitung_potongan'));
     }
 
     /**
@@ -424,6 +433,7 @@ class CustomerController extends Controller
      */
     public function showProfil()
     {
+
         return view('customer.profil.index');
     }
     
@@ -498,5 +508,41 @@ class CustomerController extends Controller
 
             // dd("Berhasil", $request);
         }
+    }
+
+    // menghitung total transaksi finish
+    public function totalTransaksiSukses()
+    {
+        $total = DB::table('item_orders')
+                ->select(DB::raw("sum(total_price) as total_price , status, MONTH(created_at) as month,
+                                    YEAR(created_at) as year"))
+                ->groupBy('status' ,'month','year', 'user_id')
+                ->having('user_id', \Auth::user()->id)
+                ->having('status', 'FINISH')
+                ->having('month', Carbon::now()->month)
+                ->having('year', Carbon::now()->year)
+                ->get();
+        // $total = count($data);
+
+        // $total = Carbon::now()->year;
+
+        return $total;
+    }
+
+    // menghitung total transaksi finish
+    public function jumlahTransaksiSukses()
+    {
+        $jumlah = DB::table('item_orders')
+                ->select(DB::raw("count(total_price) as transaction_count , status, MONTH(created_at) as month,
+                                    YEAR(created_at) as year"))
+                ->groupBy('status' ,'month','year', 'user_id')
+                ->having('user_id', \Auth::user()->id)
+                ->having('status', 'FINISH')
+                ->having('month', Carbon::now()->month)
+                ->having('year', Carbon::now()->year)
+                ->get();
+
+
+        return $jumlah;
     }
 }

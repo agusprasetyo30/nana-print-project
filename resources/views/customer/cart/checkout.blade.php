@@ -138,15 +138,15 @@
                      <div class="row">
                         <div class="col-md-12 pt-2 pb-2" style="text-align: right">
                            <div>Sub Total : <span class="total_price"> {{ toRupiah($data_cart[0]->total_price) }} </span></div>
-                           <div style="margin-right: 62px">Diskon (%) : <span class="total_price"> 10 % </span></div>
+                           <div style="margin-right: 62px">Diskon (%) : <span class="total_price"> {{ $diskon }} % </span></div>
                            <hr>
-                           <div>Total Pembayaran : <span class="total_price"> {{ toRupiah($data_cart[0]->total_price) }} </span></div>
-                           coba : {{ $coba }}
+                           <div>Total Pembayaran : <span class="total_price"> {{ toRupiah($hitung_potongan) }} </span></div>
                            <input type="submit" class="btn btn-primary mt-2 mb-2 buat_pesanan" value="Buat Pesanan">
                         </div>
                      </div>
                      <input type="hidden" name="id_order" value="{{ $data_cart[0]->id }}">
-                     <input type="hidden" name="total_price" value="{{ $data_cart[0]->total_price }}">
+                     <input type="text" name="total_price" value="{{ $data_cart[0]->total_price }}">
+                     <input type="text" name="hitung_potongan" value="{{ $hitung_potongan }}">
                   </form>
                </div>
             </div>
