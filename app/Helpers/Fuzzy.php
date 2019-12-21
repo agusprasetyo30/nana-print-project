@@ -4,9 +4,7 @@
 
    Class Fuzzy 
    {
-      // mencoba
-      // public $total_bayar = 50000;
-      // public $jumlah_transaksi = 6;
+      //FIXME: Untuk diskon hanya diskon sedang
 
 
       // variabel total bayar
@@ -79,7 +77,6 @@
          return $hasil;
       }
 
-      // TODO
       // Jumlah transaksi Jarang
       public function fuzzifikasi_jumlah_transaksi_jarang($jumlah_transaksi)
       {
@@ -467,16 +464,6 @@
          $total_luas = $this->total_luas_diskon_sedang($total_bayar, $jumlah_transaksi);
 
          $hitung = $total_integral/$total_luas;
-         
-         // dd(
-         //    $this->m1_integral_diskon_sedang($total_bayar, $jumlah_transaksi),
-         //    $this->m2_integral_diskon_sedang($total_bayar, $jumlah_transaksi),
-         //    $this->m3_integral_diskon_sedang($total_bayar, $jumlah_transaksi),
-         //    $this->m4_integral_diskon_sedang($total_bayar, $jumlah_transaksi),
-         //    $this->m5_integral_diskon_sedang($total_bayar, $jumlah_transaksi),
-         //    $this->m6_integral_diskon_sedang($total_bayar, $jumlah_transaksi),
-         //    $hitung
-         // );
 
          return $hitung;
       }
