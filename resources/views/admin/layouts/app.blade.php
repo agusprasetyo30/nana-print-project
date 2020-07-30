@@ -209,7 +209,7 @@
                 'info': true,
                 'autoWidth': false
             })
-        })
+        });
     </script>
 
     @stack('js')

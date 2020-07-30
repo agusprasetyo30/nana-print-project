@@ -169,9 +169,6 @@
                var ambil_id = $('#tampung #input-data'+data_id+' .form-group select option[value="' + $(this).val() + '"]').data('value');
                document.getElementById('ambil_id'+data_id).value = ambil_id;
             });
-
-            
-
          })
 
             $('#tampung #input-data1 .form-group select').change(function() {

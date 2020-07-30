@@ -92,7 +92,6 @@ Route::group(['middleware' => ['auth' ,'role:admin'] ,'prefix' => 'admin'], func
     Route::get('order-print/{id}/download', 'TransaksiPrintController@downloadFile')->name('order-print.download');
     Route::put('order-print/{id}/edit', 'TransaksiPrintController@updateStatus')->name('order-print.update-status');
 
-
     // Laporan Keuangan
     Route::get('money-report', 'LaporanKeuanganController@index')->name('money-report.index');
 });

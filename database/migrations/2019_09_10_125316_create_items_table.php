@@ -21,6 +21,7 @@ class CreateItemsTable extends Migration
             $table->float('price');
             $table->integer('stock')->default(1)->unsigned();
             $table->enum('status', ['SHOW', 'HIDE']);
+            $table->integer('discount')->default(0)->unsigned();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();

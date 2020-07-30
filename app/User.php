@@ -38,8 +38,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * one to many ke tabel item_orders
+     *
+     * @return void
+     */
     public function item_orders()
     {
-        return $this->hasMany('App\item_order');
+        return $this->hasMany('App\Item_order');
+    }
+
+    /**
+     * one to many ke tabel comments
+     *
+     * @return void
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
     }
 }

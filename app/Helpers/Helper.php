@@ -3,7 +3,7 @@
 use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator as paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
-// use Intervention\Image\File;
+use Intervention\Image\File;
 // use Intervention\Image\Facades\Image;
 
 function savePhoto($file, $width, $height, $name, $location)
@@ -28,6 +28,7 @@ function saveOriginalPhoto($file, $name, $location)
     {
         File::makeDirectory($path, 0777, true, true);
     }
+    
     Image::make($file)->save($path . '/' . $images);
     return $location . '/' . $images;
 }

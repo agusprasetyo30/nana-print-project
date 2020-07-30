@@ -298,7 +298,6 @@ class CustomerController extends Controller
 
             $data->item()->sync($sync);
             
-            
         } else {
             // Jika cart sudah ada
 
